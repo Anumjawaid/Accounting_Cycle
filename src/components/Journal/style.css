@@ -1,6 +1,14 @@
-#genejou {
+body{
+    background:linear-gradient(-45deg,rgb(20,21,22),rgb(77, 71, 71),rgb(30,31,30));
+    color: whitesmoke;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+    font-style: oblique;
+}
+#genejou th{
     border-collapse: collapse;
     width: 100%;
+    background-color: teal;
 }
 #genejou td ,th{
     padding: 10px;
@@ -9,6 +17,9 @@
 }
 input[type='text']{
     border: none;
+    padding:10px;
+    background-color: rgb(31, 30, 30);
+    color:white;
     border-bottom: 1px solid grey;
 }
 input[type='text']:focus{
