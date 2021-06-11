@@ -2,19 +2,24 @@ import react, { useState } from 'react'
 import './style.css'
 
 export default function GeneralJournal() {
+    
     const [acc,setacc]=useState()
     const[debit,setdeb]=useState()
     const[credit,setcred]=useState()
     const[val,setval]=useState()
-    const[journal,setjournal]=useState()
+    const[journal,setjournal]=useState([])
    const generjournal={}
     const addEntry = ()=>{
+        if(acc =='' || debit =='' || credit == '' || val==''){
+            alert("PLEASE FILL ALL DETAILS BATAMEEZI NAHI ")
+        }
+        else{
         generjournal.acc=acc
         generjournal.date=datetoday()
         generjournal.credit=credit
         generjournal.debit=debit
         generjournal.value=val
-        setjournal(generjournal)
+        setjournal([...journal,generjournal])
         setacc("")
         setdeb("")
         setcred("")
@@ -24,6 +29,7 @@ export default function GeneralJournal() {
     }
 
 
+    }
 
     const datetoday =()=>{
         var month=['Jan',"Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"]
@@ -63,6 +69,23 @@ export default function GeneralJournal() {
                                 <td><input type='text' value={val} onChange={(e)=>setval(e.target.value)} placeholder='Value'></input></td>
                             
                         </tr>
+                        {journal.length? 
+                         journal.map((v,i)=>(
+                            <tr>
+                            <td>{v['date']}</td>
+                            <td>{v['acc']}</td>
+                            <td>{v['debit']}</td>
+                            <td>{v['credit']}</td>
+                            <td>{}</td>
+                            <td>{v['value']}</td>
+                            </tr>
+                            
+                            
+                        ))
+                        // <h3>We have something to show</h3>
+                         :<h2>Nothing to show</h2>}
+                       
+                        
                         <tr>
                             <td colSpan='6'><button onClick={addEntry}>Add</button></td>
                             </tr>
