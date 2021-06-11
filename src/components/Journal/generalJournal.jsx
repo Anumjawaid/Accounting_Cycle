@@ -10,7 +10,7 @@ export default function GeneralJournal() {
     const[journal,setjournal]=useState([])
    const generjournal={}
     const addEntry = ()=>{
-        if(acc =='' || debit =='' || credit == '' || val==''){
+        if(acc ==' ' || debit ==' ' || credit == ' ' || val==' '){
             alert("PLEASE FILL ALL DETAILS BATAMEEZI NAHI ")
         }
         else{
@@ -20,10 +20,10 @@ export default function GeneralJournal() {
         generjournal.debit=debit
         generjournal.value=val
         setjournal([...journal,generjournal])
-        setacc("")
-        setdeb("")
-        setcred("")
-        setval("")
+        setacc(" ")
+        setdeb(" ")
+        setcred(" ")
+        setval(" ")
         console.log(journal,"journal")
         console.log(generjournal,'generaljournal')
     }
@@ -77,7 +77,7 @@ export default function GeneralJournal() {
                             <td>{v['debit']}</td>
                             <td>{v['credit']}</td>
                             <td>{}</td>
-                            <td>{v['value']}</td>
+                            <td>${v['value']}</td>
                             </tr>
                             
                             
