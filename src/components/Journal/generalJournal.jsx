@@ -1,5 +1,6 @@
 import react, { useState } from 'react'
 import './style.css'
+import firebase from '../configuration/firebase'
 
 export default function GeneralJournal() {
     
@@ -9,6 +10,8 @@ export default function GeneralJournal() {
     const[val,setval]=useState()
     const[rdb,setrdb]=useState()
     const[journal,setjournal]=useState([])
+    const [tacc,setTacc]=useState([])
+
    const generjournal={}
     const addEntry = ()=>{
         if(acc ==' ' || debit ==' ' || credit == ' ' || val==' '){
@@ -20,14 +23,33 @@ export default function GeneralJournal() {
         generjournal.credit=credit
         generjournal.debit=debit
         generjournal.value=val
-        generjournal.entry=rdb
+        generjournal.tacc=rdb
+        
+        var key=firebase.database().ref('/').push().key
+        // generjournal.key=key
+        console.log(key)
         setjournal([...journal,generjournal])
         setacc(" ")
         setdeb(" ")
         setcred(" ")
         setval(" ")
+        // AddGeneral()
         console.log(journal,"journal")
         console.log(generjournal,'generaljournal')
+        
+        // now firebase work for generaljournal
+        console.log(generjournal['entry'])
+        firebase.database().ref('/').child('generalentries').push(generjournal)
+        // for taccount
+        var tacccart={
+
+        }
+        tacccart.entry=generjournal['tacc']
+        tacccart.value=generjournal['value']
+        console.log(tacccart)
+        setacc([...tacc,tacccart])
+        firebase.database().ref('/').child('taccounts').push(tacccart)
+
     }
 
 
@@ -43,6 +65,7 @@ export default function GeneralJournal() {
         return date
     }
     // console.log(datetoday)
+    
     return (
         <>
         <div className="conatiner">
@@ -82,7 +105,7 @@ export default function GeneralJournal() {
                             <td>{v['acc']}</td>
                             <td>{v['debit']}</td>
                             <td>{v['credit']}</td>
-                            <td>{v['entry']}</td>
+                            <td>{v['tacc']}</td>
                             <td>${v['value']}</td>
                             </tr>
                             
