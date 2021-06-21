@@ -7,6 +7,7 @@ export default function GeneralJournal() {
     const[debit,setdeb]=useState()
     const[credit,setcred]=useState()
     const[val,setval]=useState()
+    const[rdb,setrdb]=useState()
     const[journal,setjournal]=useState([])
    const generjournal={}
     const addEntry = ()=>{
@@ -19,6 +20,7 @@ export default function GeneralJournal() {
         generjournal.credit=credit
         generjournal.debit=debit
         generjournal.value=val
+        generjournal.entry=rdb
         setjournal([...journal,generjournal])
         setacc(" ")
         setdeb(" ")
@@ -65,7 +67,11 @@ export default function GeneralJournal() {
                             <td><input type='text' value={acc} onChange={(e)=>setacc(e.target.value)} placeholder='Account'></input></td>
                                 <td><input type='text'value={debit} onChange={(e)=>setdeb(e.target.value)} placeholder='Debit'></input></td>
                                <td> <input type='text' value={credit} onChange={(e)=>setcred(e.target.value)} placeholder='Credit'></input></td>
-                               <td> <input type='radio' id='debit' value='debit'name='track'></input><label for='debit'>debit</label><input value='credit'type='radio' id='credit' name='track'></input><label for='credit'>credit</label></td>
+                               <td>
+                               <input type='radio' id='debit' value='debit'name='track' onChange={(e)=>setrdb(e.target.value)}></input>
+                               <label for='debit'>debit</label>
+                               <input value='credit'type='radio' id='credit' name='track' onChange={(e)=>setrdb(e.target.value)}></input>
+                               <label for='credit'>credit</label></td>
                                 <td><input type='text' value={val} onChange={(e)=>setval(e.target.value)} placeholder='Value'></input></td>
                             
                         </tr>
@@ -76,7 +82,7 @@ export default function GeneralJournal() {
                             <td>{v['acc']}</td>
                             <td>{v['debit']}</td>
                             <td>{v['credit']}</td>
-                            <td>{}</td>
+                            <td>{v['entry']}</td>
                             <td>${v['value']}</td>
                             </tr>
                             
