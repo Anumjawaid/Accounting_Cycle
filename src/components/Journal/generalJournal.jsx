@@ -47,10 +47,11 @@ export default function GeneralJournal() {
         tacccart.entry=generjournal['tacc']
         tacccart.value=generjournal['value']
         console.log(tacccart)
-        setacc([...tacc,tacccart])
+        setTacc([...tacc,tacccart])
         firebase.database().ref('/').child('taccounts').push(tacccart)
 
     }
+    console.log(tacc)
 
 
     }
@@ -112,6 +113,7 @@ export default function GeneralJournal() {
                             
                         ))
                         // <h3>We have something to show</h3>
+
                          :<h2>Nothing to show</h2>}
                        
                         
@@ -120,6 +122,12 @@ export default function GeneralJournal() {
                             </tr>
                     </table>
                 </div>
+            </div>
+            <div className="container">
+                <h5>asdfghj</h5>
+                {tacc.map((v,i)=>{
+                    <h3>{v['entry']}</h3>
+                })}
             </div>
         </div>
         </>
