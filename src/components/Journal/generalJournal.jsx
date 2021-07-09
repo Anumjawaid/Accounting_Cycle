@@ -1,6 +1,7 @@
 import react, { useState } from 'react'
 import './style.css'
 import firebase from '../configuration/firebase'
+import {Link} from 'react-router-dom'
 
 export default function GeneralJournal() {
     
@@ -11,6 +12,8 @@ export default function GeneralJournal() {
     const[rdb,setrdb]=useState()
     const[journal,setjournal]=useState([])
     const [tacc,setTacc]=useState([])
+    const [tacc1,setTacc1]=useState([])
+    const [tacc2,setTacc2]=useState([])
 
    const generjournal={}
     const addEntry = ()=>{
@@ -38,20 +41,29 @@ export default function GeneralJournal() {
         console.log(generjournal,'generaljournal')
         
         // now firebase work for generaljournal
-        console.log(generjournal['entry'])
         firebase.database().ref('/').child('generalentries').push(generjournal)
         // for taccount
         var tacccart={
 
         }
-        tacccart.entry=generjournal['tacc']
+        tacccart.tabname=generjournal['credit']
         tacccart.value=generjournal['value']
+        tacccart.post='credit'
+        tacccart.belongsto=key
+        
+        setTacc1([...tacc1,tacccart])
         console.log(tacccart)
-        setTacc([...tacc,tacccart])
-        firebase.database().ref('/').child('taccounts').push(tacccart)
+        firebase.database().ref('/').child('taccount').push(tacc1)
+        tacccart.tabname=generjournal['debit']
+        tacccart.value=generjournal['value']
+        tacccart.post='debit'
+        tacccart.belongsto=key
+        setTacc2([...tacc2,tacccart])
+
+        firebase.database().ref('/').child('taccount').push(tacc2)
+        console.log(tacccart)
 
     }
-    console.log(tacc)
 
 
     }
@@ -125,9 +137,7 @@ export default function GeneralJournal() {
             </div>
             <div className="container">
                 <h5>asdfghj</h5>
-                {tacc.map((v,i)=>{
-                    <h3>{v['entry']}</h3>
-                })}
+                <Link to='/tacc'>T Accounts</Link>
             </div>
         </div>
         </>
