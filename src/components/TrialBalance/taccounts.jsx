@@ -6,31 +6,34 @@ export default function Taccounts ()  {
 
     const acc=[]
     var [tac,settac]=useState([])
-    // // firebase.database().ref('/').child('taccounts').on('child_added',(s)=>{
-    // //     acc.push(s.val())
-    // //     // tac=acc
-
-    //     console.log(s.val(),acc)
-    // })
-    firebase.database().ref('/').child('taccounts').on('child_added',(s)=>(
+  
+    firebase.database().ref('/').child('taccount').on('child_added',(s)=>(
         acc.push(s.val())
     ))
-    // settac(acc)
     useEffect(()=>{
        settac(acc)
 
         
 
-    })
-    // useLayoutEffect(()=>{
-    //     acc.length ? console.log("Nothing",acc.length) :console.log("Something")
-    // })
-    // console.log(tac,"incr")
+    },[acc])
+    
     return(
         <>
         <h3>T accounts</h3>
         {tac.map((v,i)=>(
-            <h1>{v['entry']} {v['value']}</h1>
+            <div className="account">
+                <div className="name">{v['tabname']}</div>
+               <table>
+                   <tr>
+                       <th>Debit</th>
+                       <th>Credit</th>
+                   </tr>
+                   <tr>
+                       <td>{v['value']}</td>
+                       <td>{v['credit']}</td>
+                   </tr>
+               </table>
+            </div>
         ))}
        
 
