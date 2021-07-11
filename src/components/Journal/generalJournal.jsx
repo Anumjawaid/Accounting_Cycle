@@ -11,9 +11,7 @@ export default function GeneralJournal() {
     const[val,setval]=useState()
     const[rdb,setrdb]=useState()
     const[journal,setjournal]=useState([])
-    const [tacc,setTacc]=useState([])
-    const [tacc1,setTacc1]=useState([])
-    const [tacc2,setTacc2]=useState([])
+    
 
    const generjournal={}
     const addEntry = ()=>{
@@ -51,17 +49,16 @@ export default function GeneralJournal() {
         tacccart.post='credit'
         tacccart.belongsto=key
         
-        setTacc1([...tacc1,tacccart])
-        console.log(tacccart)
-        firebase.database().ref('/').child('taccount').push(tacc1)
-        tacccart.tabname=generjournal['debit']
-        tacccart.value=generjournal['value']
-        tacccart.post='debit'
-        tacccart.belongsto=key
-        setTacc2([...tacc2,tacccart])
+        // console.log(tacccart)
+        firebase.database().ref('/').child('taccount').push(tacccart)
+        var tacccart1={}
+        tacccart1.tabname=generjournal['debit']
+        tacccart1.value=generjournal['value']
+        tacccart1.post='debit'
+        tacccart1.belongsto=key
 
-        firebase.database().ref('/').child('taccount').push(tacc2)
-        console.log(tacccart)
+        firebase.database().ref('/').child('taccount').push(tacccart1)
+        // console.log(tacccart)
 
     }
 
