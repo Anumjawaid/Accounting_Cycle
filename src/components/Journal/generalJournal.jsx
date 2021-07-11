@@ -1,4 +1,4 @@
-import react, { useState } from 'react'
+import react, { useState,useEffect} from 'react'
 import './style.css'
 import firebase from '../configuration/firebase'
 import {Link} from 'react-router-dom'
@@ -11,7 +11,19 @@ export default function GeneralJournal() {
     const[val,setval]=useState()
     const[rdb,setrdb]=useState()
     const[journal,setjournal]=useState([])
-    
+    const accts=[]
+    var [tac,settac]=useState([])
+    firebase.database().ref('/').child('taccount').on('child_added',(s)=>(
+        accts.push(s.val())
+    ))
+    useEffect(()=>{
+       settac(accts)
+
+        
+
+    },[acc])
+    console.log(tac[0],"taccounts")
+
 
    const generjournal={}
     const addEntry = ()=>{
@@ -26,9 +38,10 @@ export default function GeneralJournal() {
         generjournal.value=val
         generjournal.tacc=rdb
         
-        var key=firebase.database().ref('/').push().key
+        
+        // var key=firebase.database().ref('/').push()
         // generjournal.key=key
-        console.log(key)
+        // console.log(key)
         setjournal([...journal,generjournal])
         setacc(" ")
         setdeb(" ")
@@ -44,10 +57,25 @@ export default function GeneralJournal() {
         var tacccart={
 
         }
+        var ele
+        try{
+        for (ele in tac){
+            if(ele.tabname === generjournal['credit']){
+                // update and append
+
+            }
+            else{
+                // add
+            }
+        }
+    }
+    catch{
+
+    }
         tacccart.tabname=generjournal['credit']
         tacccart.value=generjournal['value']
         tacccart.post='credit'
-        tacccart.belongsto=key
+        // tacccart.belongsto=key
         
         // console.log(tacccart)
         firebase.database().ref('/').child('taccount').push(tacccart)
@@ -55,7 +83,7 @@ export default function GeneralJournal() {
         tacccart1.tabname=generjournal['debit']
         tacccart1.value=generjournal['value']
         tacccart1.post='debit'
-        tacccart1.belongsto=key
+        // tacccart1.belongsto=key
 
         firebase.database().ref('/').child('taccount').push(tacccart1)
         // console.log(tacccart)
