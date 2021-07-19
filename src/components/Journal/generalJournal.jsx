@@ -10,10 +10,11 @@ export default function GeneralJournal() {
     const[credit,setcred]=useState()
     const[val,setval]=useState()
     const[rdb,setrdb]=useState()
+    //actual journal
     const[journal,setjournal]=useState([])
-    const accts=[]
+    const accts=[]//for getting taccounts from firebase
     var [tac,settac]=useState([])
-    firebase.database().ref('/').child('taccount').on('child_added',(s)=>(
+    firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(
         accts.push(s.val())
     ))
     useEffect(()=>{
@@ -22,7 +23,7 @@ export default function GeneralJournal() {
         
 
     },[acc])
-    console.log(tac[0],"taccounts")
+    // console.log(tac[0],"taccounts")
 
 
    const generjournal={}
@@ -39,56 +40,86 @@ export default function GeneralJournal() {
         generjournal.tacc=rdb
         
         
-        // var key=firebase.database().ref('/').push()
-        // generjournal.key=key
-        // console.log(key)
+        
         setjournal([...journal,generjournal])
-        setacc(" ")
-        setdeb(" ")
-        setcred(" ")
-        setval(" ")
+        setacc("")
+        setdeb("")
+        setcred("")
+        setval("")
         // AddGeneral()
         console.log(journal,"journal")
         console.log(generjournal,'generaljournal')
         
         // now firebase work for generaljournal
-        firebase.database().ref('/').child('generalentries').push(generjournal)
+        // firebase.database().ref('/').child('generalentries').push(generjournal)
         // for taccount
-        var tacccart={
+          var taccounttemp={}
+          try{
+              console.log(tac,"tacme kya")
+              if(tac.length == 0){
+
+                  taccounttemp.name=generjournal['credit']
+                  taccounttemp.crvalue=[generjournal['value']]
+                  taccounttemp.debvalue=[12]
+                //   console.log(taccounttemp,"taccounttemp")
+                   firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                  taccounttemp.name=generjournal['debit']
+                  taccounttemp.debvalue=[generjournal['value']]
+                  taccounttemp.crvalue=[0]
+                 //   console.log(taccounttemp,"taccounttemp")
+                  firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+
+
+              }
+              else{
+                  var e=0
+                  for(e;e<tac.length;e++){
+                    console.log(tac[e]["name"],generjournal['credit'] ,generjournal['credit'] == tac[e]['name'])
+                    if(generjournal['credit'] == tac[e]['name']){
+                        console.log("If check me ayaS")
+                        // update the entry 
+                        console.log(tac[e]['crvalue'],tac[e]['debvalue'],tac[e]['name'],'values')
+                        firebase.database().ref('/').child('Taccounts').set({
+                            name:tac[e]['name'],
+                            crvalue: [...tac[e]['crvalue'],generjournal['value']],
+                            debvalue:tac[e]['debvalue']
+                        })
+                    }
+                    if(generjournal['debit'] == tac[e]['name']){
+                        console.log("Dosray if me aya")
+                        firebase.database().ref('/').child('Taccounts/key').set({
+                            name:tac[e]['name'],
+                            debvalue: [...tac[e]['debvalue'],generjournal['value']],
+                            crvalue:tac[e]['crvalue']
+                        })
+
+                    }
+                    else{
+                     
+                        taccounttemp.name=generjournal['credit']
+                        taccounttemp.crvalue=[generjournal['value']]
+                        taccounttemp.debvalue=[0]
+                      //   console.log(taccounttemp,"taccounttemp")
+                         firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                        taccounttemp.name=generjournal['debit']
+                        taccounttemp.debvalue=[generjournal['value']]
+                        taccounttemp.crvalue=[0]
+                       //   console.log(taccounttemp,"taccounttemp")
+                        firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                    }
+
+                  }
+              }
+          }
+          catch{
+
+          }
+
+
+
+
 
         }
-        var ele
-        try{
-        for (ele in tac){
-            if(ele.tabname === generjournal['credit']){
-                // update and append
-
-            }
-            else{
-                // add
-            }
-        }
-    }
-    catch{
-
-    }
-        tacccart.tabname=generjournal['credit']
-        tacccart.value=generjournal['value']
-        tacccart.post='credit'
-        // tacccart.belongsto=key
-        
-        // console.log(tacccart)
-        firebase.database().ref('/').child('taccount').push(tacccart)
-        var tacccart1={}
-        tacccart1.tabname=generjournal['debit']
-        tacccart1.value=generjournal['value']
-        tacccart1.post='debit'
-        // tacccart1.belongsto=key
-
-        firebase.database().ref('/').child('taccount').push(tacccart1)
-        // console.log(tacccart)
-
-    }
 
 
     }
