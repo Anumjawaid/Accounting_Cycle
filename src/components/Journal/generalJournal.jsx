@@ -4,18 +4,28 @@ import firebase from '../configuration/firebase'
 import { Link } from 'react-router-dom'
 
 export default function GeneralJournal() {
-
-    const [acc, setacc] = useState()
+    const[acc,setacc]=useState()
     const [debit, setdeb] = useState()
     const [credit, setcred] = useState()
     const [val, setval] = useState()
     const [rdb, setrdb] = useState()
     //actual journal
     const [journal, setjournal] = useState([])
-    const accts = []//for getting taccounts from firebase
+    const accts = []//for getting taccounts name from firebase
+    const acctsdata = []//for getting taccounts name from firebase
+    const dkey=[]
+
     var [tac, settac] = useState([])
-    firebase.database().ref('/').child('Taccounts').on('child_added', (s) => (
+    var [tacdata, settacdata] = useState([])
+    var [keydata,setkeydata]=useState([])
+
+    firebase.database().ref('/').child('Tnames').on('child_added', (s) => (
         accts.push(s.val())
+    ))
+    var temp={}
+    firebase.database().ref('/').child('Taccounts').on('child_added', (s) => (
+        dkey.push(s.key),
+        acctsdata.push(s.val())
     ))
     useEffect(() => {
         settac(accts)
@@ -23,7 +33,15 @@ export default function GeneralJournal() {
 
 
     }, [acc])
-    // console.log(tac[0],"taccounts")
+    useEffect(() => {
+
+        settacdata(acctsdata)
+        setkeydata(dkey)
+
+
+
+    }, [acc])
+    console.log(acctsdata,keydata,"taccounts")
 
 
     const generjournal = {}
@@ -49,70 +67,62 @@ export default function GeneralJournal() {
             // AddGeneral()
             console.log(journal, "journal")
             console.log(generjournal, 'generaljournal')
-
             // now firebase work for generaljournal
             // firebase.database().ref('/').child('generalentries').push(generjournal)
             // for taccount
             var taccounttemp = {}
+            console.log(tac.includes(generjournal['credit']),tac.includes(generjournal['debit']))
+            if(tac.length==0 ||(!(tac.includes(generjournal['credit'])) && !(tac.includes(generjournal['debit']))))
+            {
+                firebase.database().ref('/').child('Tnames').push(generjournal['credit'])
+                firebase.database().ref('/').child('Tnames').push(generjournal['debit'])
+                taccounttemp.name=generjournal['credit']
+                taccounttemp.credit=[generjournal['value']]
+                taccounttemp.debit=[0]
+                firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                taccounttemp.name=generjournal['debit']
+                taccounttemp.debit=[generjournal['value']]
+                taccounttemp.credit=[0]
+                firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+
+            }
+            else if(tac.includes(generjournal['credit'] && tac.includes(generjournal['debit']))){
+                // both updated
+
+            }
+            else{
+                if(tac.includes(generjournal['credit'])){
+                    // update the credit entry for this name and add new entry to debit
+                    var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['credit']))
+                    var keyacc=keydata[ind]
+
+                    console.log(keyacc,"updated credit")
+                    console.log(tacdata[ind]['name'],tacdata[ind]['credit'],tacdata[ind]['debit'],"updated credit entries")
+                    firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
+                        {
+                            name:tacdata[ind]['name'],
+                            credit:[...tacdata[ind]['credit'],generjournal['credit']],
+                            debit:[tacdata[ind]['debit']]
+                        }
+                    )
+                    // new to debit
+                    taccounttemp.name=generjournal['debit']
+                taccounttemp.debit=[generjournal['value']]
+                taccounttemp.credit=[0]
+                firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+
+
+
+
+                }
+                else{
+                    // update the debit entry and add  new to credit
+                    console.log(tacdata.keys(),"coming from updated debit")
+
+                }
+            }
+
             
-
-            try {
-                console.log(tac, "tacme kya")
-                if (tac.length == 0) {
-
-                    taccounttemp.name = generjournal['credit']
-                    taccounttemp.crvalue = [generjournal['value']]
-                    taccounttemp.debvalue = [12]
-                    //   console.log(taccounttemp,"taccounttemp")
-                    firebase.database().ref('/').child('Taccounts').push(taccounttemp)
-                    var k = firebase.database().ref('/').child('Taccounts/').getKey()
-                    console.log(k,"key1")
-                    taccounttemp.name = generjournal['debit']
-                    taccounttemp.debvalue = [generjournal['value']]
-                    taccounttemp.crvalue = [0]
-                    //   console.log(taccounttemp,"taccounttemp")
-                    firebase.database().ref('/').child('Taccounts').push(taccounttemp)
-                    console.log(k,"key2")
-
-
-
-                }
-                
-                else {
-                    var e = 0
-                    for (e; e < tac.length; e++) {
-                        console.log(tac[e]["name"], generjournal['credit'], generjournal['credit'] == tac[e]['name'])
-                      
-                        if (generjournal['credit'] == tac[e]['name']) {
-                            console.log("If check me ayaS")
-                            console.log("key", firebase.database().ref('/Taccounts').getKey())
-                            // update the entry 
-                            console.log(tac[e]['crvalue'], tac[e]['debvalue'], tac[e]['name'], 'values')
-                            firebase.database().ref('/').child('Taccounts').set({
-                                name: tac[e]['name'],
-                                crvalue: [...tac[e]['crvalue'], generjournal['value']],
-                                debvalue: tac[e]['debvalue']
-                            })
-                        }
-                        if (generjournal['debit'] == tac[e]['name']) {
-                            console.log("Dosray if me aya")
-
-                            firebase.database().ref('/').child('Taccounts').set({
-                                name: tac[e]['name'],
-                                debvalue: [...tac[e]['debvalue'], generjournal['value']],
-                                crvalue: tac[e]['crvalue']
-                            })
-
-                        }
-
-
-                    }
-
-                }
-            }
-            catch {
-
-            }
 
 
 
