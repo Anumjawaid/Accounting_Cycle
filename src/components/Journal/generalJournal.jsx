@@ -8,7 +8,6 @@ export default function GeneralJournal() {
     const [debit, setdeb] = useState()
     const [credit, setcred] = useState()
     const [val, setval] = useState()
-    const [rdb, setrdb] = useState()
     //actual journal
     const [journal, setjournal] = useState([])
     const accts = []//for getting taccounts name from firebase
@@ -54,8 +53,7 @@ export default function GeneralJournal() {
             generjournal.date = datetoday()
             generjournal.credit = credit
             generjournal.debit = debit
-            generjournal.value = val
-            generjournal.tacc = rdb
+            generjournal.value = Number(val)
 
 
 
@@ -86,8 +84,31 @@ export default function GeneralJournal() {
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
 
             }
-            else if(tac.includes(generjournal['credit'] && tac.includes(generjournal['debit']))){
+            else if(tac.includes(generjournal['credit']) && tac.includes(generjournal['debit'])){
                 // both updated
+                var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['credit']))
+                var keyacc=keydata[ind]
+
+                console.log(keyacc,"updated credit")
+                console.log(tacdata[ind]['name'],tacdata[ind]['credit'],tacdata[ind]['debit'],"both data updated")
+                firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
+                    {
+                        name:tacdata[ind]['name'],
+                        credit:[...tacdata[ind]['credit'],generjournal['value']],
+                        debit:[tacdata[ind]['debit']]
+                    }
+                )
+                // debit update
+                var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['debit']))
+                var keyacc=keydata[ind]
+                firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
+                    {
+                        name:tacdata[ind]['name'],
+                        debit:[...tacdata[ind]['debit'],generjournal['value']],
+                        credit:[tacdata[ind]['credit']]
+                    }
+                )
+                
 
             }
             else{
@@ -101,7 +122,7 @@ export default function GeneralJournal() {
                     firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
                         {
                             name:tacdata[ind]['name'],
-                            credit:[...tacdata[ind]['credit'],generjournal['credit']],
+                            credit:[...tacdata[ind]['credit'],generjournal['value']],
                             debit:[tacdata[ind]['debit']]
                         }
                     )
@@ -110,6 +131,7 @@ export default function GeneralJournal() {
                 taccounttemp.debit=[generjournal['value']]
                 taccounttemp.credit=[0]
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                firebase.database().ref('/').child('Tnames').push(generjournal['debit'])
 
 
 
@@ -118,6 +140,24 @@ export default function GeneralJournal() {
                 else{
                     // update the debit entry and add  new to credit
                     console.log(tacdata.keys(),"coming from updated debit")
+                    var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['debit']))
+                    var keyacc=keydata[ind]
+
+                    console.log(keyacc,"updated debit")
+                    console.log(tacdata[ind]['name'],tacdata[ind]['debit'],tacdata[ind]['credit'],"updated debit entries")
+                    firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
+                        {
+                            name:tacdata[ind]['name'],
+                            debit:[...tacdata[ind]['debit'],generjournal['value']],
+                            credit:[tacdata[ind]['credit']]
+                        }
+                    )
+                    // new to credit
+                    taccounttemp.name=generjournal['credit']
+                taccounttemp.credit=[generjournal['value']]
+                taccounttemp.debit=[0]
+                firebase.database().ref('/').child('Taccounts').push(taccounttemp)
+                firebase.database().ref('/').child('Tnames').push(generjournal['credit'])
 
                 }
             }
@@ -160,7 +200,6 @@ export default function GeneralJournal() {
                                 <th>Account(Explanation)</th>
                                 <th>Debit</th>
                                 <th>Credit</th>
-                                <th>RadioBtn</th>
                                 <th>Value</th>
                             </tr>
                             <tr>
@@ -168,11 +207,6 @@ export default function GeneralJournal() {
                                 <td><input type='text' value={acc} onChange={(e) => setacc(e.target.value)} placeholder='Account'></input></td>
                                 <td><input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit'></input></td>
                                 <td> <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit'></input></td>
-                                <td>
-                                    <input type='radio' id='debit' value='debit' name='track' onChange={(e) => setrdb(e.target.value)}></input>
-                                    <label for='debit'>debit</label>
-                                    <input value='credit' type='radio' id='credit' name='track' onChange={(e) => setrdb(e.target.value)}></input>
-                                    <label for='credit'>credit</label></td>
                                 <td><input type='text' value={val} onChange={(e) => setval(e.target.value)} placeholder='Value'></input></td>
 
                             </tr>
@@ -183,7 +217,6 @@ export default function GeneralJournal() {
                                         <td>{v['acc']}</td>
                                         <td>{v['debit']}</td>
                                         <td>{v['credit']}</td>
-                                        <td>{v['tacc']}</td>
                                         <td>${v['value']}</td>
                                     </tr>
 
