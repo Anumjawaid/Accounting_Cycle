@@ -1,0 +1,8 @@
+.side-by-side-entry{
+    display:flex;
+    flex-direction: row;
+    justify-content: end;
+}
+.debitdiv{
+    margin-right: 10px;;
+}
