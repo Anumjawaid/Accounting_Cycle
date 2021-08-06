@@ -1,13 +1,15 @@
 import React,{useState,useEffect, useLayoutEffect} from 'react'
 import firebase from '../configuration/firebase'
+import './style.css'
 
 
 export default function Taccounts ()  {
 
     const acc=[]
     var [tac,settac]=useState([])
+    var a
   
-    firebase.database().ref('/').child('taccount').on('child_added',(s)=>(
+    firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(
         acc.push(s.val())
     ))
     useEffect(()=>{
@@ -16,25 +18,33 @@ export default function Taccounts ()  {
         
 
     },[acc])
+    console.log(tac)
     
     return(
         <>
         <h3>T accounts</h3>
-        {tac.map((v,i)=>(
-            <div className="account">
-                <div className="name">{v['tabname']}</div>
-               <table>
-                   <tr>
-                       <th>Debit</th>
-                       <th>Credit</th>
-                   </tr>
-                   <tr>
-                       <td>{v['value']}</td>
-                       <td>{v['credit']}</td>
-                   </tr>
-               </table>
-            </div>
-        ))}
+        {
+            tac.map((v,i)=>(
+                <div>
+                    <div className="name">{v['name']}</div>
+
+                    <div className="side-by-side-entry">
+                        {v['debit'].map((v,i)=>(
+                            <div className='debitdiv'>
+                                <p>debit</p>
+                                   {v}
+                                </div>
+                        ))}
+                        {v['credit'].map((v,i)=>(
+                            <div className='creditdiv'>
+                                <p>credit</p>
+                                   {v}
+                                </div>
+                        ))}
+                        </div>   
+                                </div>
+            ))
+        }
        
 
         
