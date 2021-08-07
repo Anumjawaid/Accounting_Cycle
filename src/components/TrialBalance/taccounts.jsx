@@ -7,6 +7,7 @@ export default function Taccounts ()  {
 
     const acc=[]
     var [tac,settac]=useState([])
+    var [tacb,settac]=useState([])
     var a
   
     firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(
@@ -17,7 +18,7 @@ export default function Taccounts ()  {
 
         
 
-    },[acc])
+    },[tacb])
     console.log(tac)
     
     return(
