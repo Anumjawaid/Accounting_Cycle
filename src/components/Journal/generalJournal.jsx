@@ -91,22 +91,25 @@ export default function GeneralJournal() {
 
                 console.log(keyacc,"updated credit")
                 console.log(tacdata[ind]['name'],tacdata[ind]['credit'],tacdata[ind]['debit'],"both data updated")
+                var place =tacdata[ind]['credit']
+                place.push(generjournal['value'])
                 firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
                     {
                         name:tacdata[ind]['name'],
-                        credit:tacdata[ind]['credit'].push(generjournal['value']),
+                        credit:place,
                         debit:[tacdata[ind]['debit']]
                     }
                 )
                 // debit update
                 var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['debit']))
                 var keyacc=keydata[ind]
-                var place=tacdata[ind]['debit'].push(generjournal['value'])
+                var place=tacdata[ind]['debit']
+                place.push(generjournal['value'])
                 firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
                     {
                         name:tacdata[ind]['name'],
                         debit:place,
-                        credit:[tacdata[ind]['credit']]
+                        credit:tacdata[ind]['credit']
                     }
                 )
                 
@@ -120,12 +123,13 @@ export default function GeneralJournal() {
 
                     console.log(keyacc,"updated credit")
                     console.log(tacdata[ind]['name'],tacdata[ind]['credit'],tacdata[ind]['debit'],"updated credit entries")
-                    var place=tacdata[ind]['credit'].push(generjournal['value'])
+                    var place=tacdata[ind]['credit']
+                    place.push(generjournal['value'])
                     firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
                         {
                             name:tacdata[ind]['name'],
                             credit:place,
-                            debit:[tacdata[ind]['debit']]
+                            debit:tacdata[ind]['debit']
                         }
                     )
                     // new to debit
@@ -145,15 +149,17 @@ export default function GeneralJournal() {
                     var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['debit']))
                     var keyacc=keydata[ind]
 
-                    console.log(keyacc,"updated debit")
-                    console.log(tacdata[ind]['name'],tacdata[ind]['debit'],tacdata[ind]['credit'],"updated debit entries")
-                    var place=tacdata[ind]['debit'].push(generjournal['value'])
+                    // console.log(tacdata[ind]['name'],tacdata[ind]['credit'],"updated debit entries")
+                    var place=tacdata[ind]['debit']
+                    // console.log(place,"before push")
+                    place.push(generjournal['value'])
+                    // console.log(place,"after push")
                     firebase.database().ref('/').child('Taccounts'+'/'+keyacc).set(
                         {
                             name:tacdata[ind]['name'],
 
                             debit:place,
-                            credit:[tacdata[ind]['credit']]
+                            credit:tacdata[ind]['credit']
                         }
                     )
                     // new to credit
