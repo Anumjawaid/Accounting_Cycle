@@ -1,6 +1,7 @@
 import React,{useState,useEffect, useLayoutEffect} from 'react'
 import firebase from '../configuration/firebase'
 import './style.css'
+import {Link} from 'react-router-dom'
 
 
 export default function Taccounts ()  {
@@ -72,6 +73,7 @@ export default function Taccounts ()  {
                                 </div>
             ))
         }
+        <Link to='/trial'>TrialBalance</Link>
        
 
         
