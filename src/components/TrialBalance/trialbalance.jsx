@@ -5,17 +5,26 @@ import './style.css'
 
 export default function TrialBalance () {
 
-    let [trial,settrial]=useState({})
+    let [trial,setTrial]=useState({})
     let tri=[]
-    let [result,setresult]=useState()
-
-    firebase.database().ref('/').child('Tnames').on("value",(s)=>(
-        tri.push(s.val())
+    let re=[]
+    let [result,setResult]=useState()
+    
+    firebase.database().ref('/').child('Result').on('value',(s)=>(
+         re.push(s.val())
     ))
     useEffect(()=>{
-        settrial(tri)
+        // setTrial(tri)
+        setResult(re)
+        console.log(result,"result")
+    console.log(result.length,'lennui')
     },[ ])
-    console.log(trial,"trialyyy")
+    
+    // console.log(result,"result")
+    // console.log(result.length,'lennui')
+    // console.log(trial.map((v,i)=>v['name'],result[0]['result'][i]),'mapp')
+    
+
 
 
 
@@ -23,15 +32,28 @@ export default function TrialBalance () {
         <>
         <div>
             <div><h4>Trial Balance</h4></div>
-            <div>
-                {trial.length ?<h3>results Fetcing Plz Wait</h3>:<div>
-                   {trial.map((s,i)=>(
-                       <h1>{s}</h1>
-                   ))}
-                    
-                    
-                    </div>}
-            </div>
+            {
+               result.length?<div>
+                   <table>
+                       <tr>
+                       <th>Account</th>
+                       <th>Credit</th>
+                       <th>Debit</th>
+                       </tr>
+                       
+               {result.map((v,i)=>(
+                   <tr>
+                           <td>{v['name']}</td>
+                           <td>{v['Debit']}</td>
+                           <td>{v['Credit']}</td>
+                       </tr>
+
+                   
+               ))}
+               </table>
+           </div>:<h2>Nothing in here</h2>
+            }
+            
         </div>
 
         </>
