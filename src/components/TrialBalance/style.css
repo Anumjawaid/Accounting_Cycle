@@ -6,3 +6,7 @@
 .debitdiv{
     margin-right: 10px;;
 }
+.name{
+    border-bottom: 1px blue;
+    text-align: center;
+}
