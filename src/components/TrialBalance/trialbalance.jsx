@@ -3,29 +3,13 @@ import firebase from '../configuration/firebase'
 import './style.css'
 
 
-export default function TrialBalance () {
+export default function TrialBalance (result) {
 
-    let [trial,setTrial]=useState({})
-    let tri=[]
-    let re=[]
-    let [result,setResult]=useState()
-    
-    firebase.database().ref('/').child('Result').on('value',(s)=>(
-         re.push(s.val())
-    ))
-    useEffect(()=>{
-        // setTrial(tri)
-        setResult(re)
-        console.log(result,"result")
-    console.log(result.length,'lennui')
-    },[ ])
-    
-    // console.log(result,"result")
-    // console.log(result.length,'lennui')
-    // console.log(trial.map((v,i)=>v['name'],result[0]['result'][i]),'mapp')
-    
+   console.log(result['result'][0]['name'],"result coming from trial balance",result.length)
+   function addall(total,num){
+       return total+num
 
-
+   }
 
 
     return(
@@ -33,7 +17,7 @@ export default function TrialBalance () {
         <div>
             <div><h4>Trial Balance</h4></div>
             {
-               result.length?<div>
+               result['result'].length?<div>
                    <table>
                        <tr>
                        <th>Account</th>
@@ -41,12 +25,22 @@ export default function TrialBalance () {
                        <th>Debit</th>
                        </tr>
                        
-               {result.map((v,i)=>(
+               {result['result'].map((v,i)=>(
+                   <div>
                    <tr>
                            <td>{v['name']}</td>
-                           <td>{v['Debit']}</td>
-                           <td>{v['Credit']}</td>
+                           <td>{v['debit']}</td>
+                           <td>{v['credit']}</td>
                        </tr>
+                       <tr>
+                       <td>Total</td>
+                           <td>{v['debit'].reduce(addall)}</td>
+                           <td>{v['credit'].reduce(addall)}</td>
+
+                       </tr>
+                       </div>
+                       
+                       
 
                    
                ))}
