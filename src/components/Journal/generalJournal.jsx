@@ -23,7 +23,6 @@ export default function GeneralJournal() {
     firebase.database().ref('/').child('Tnames').on('child_added', (s) => (
         accts.push(s.val())
     ))
-    var temp={}
     firebase.database().ref('/').child('Taccounts').on('child_added', (s) => (
         dkey.push(s.key),
         acctsdata.push(s.val())
