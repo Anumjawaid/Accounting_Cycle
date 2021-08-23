@@ -6,10 +6,25 @@ import './style.css'
 export default function TrialBalance (result) {
 
    console.log(result['result'][0]['name'],"result coming from trial balance",result.length)
-   function addall(total,num){
-       return total+num
+   var trial={}
+   
+       console.log(result,"coming from taccounts")
+       console.log(result['result'],"coming ")
+       var trd=0
+       var trc=0
+       result['result'].map((v,i)=>(
+        //    console.log(v['debit'],v['credit'],i,"from map")
+        v['debit'] != undefined ? trd+=v['debit']: console.log('xd'),
+        v['credit']!= undefined ? trc+=v['credit']: console.log('xc')
+       
+        ))
 
-   }
+        console.log(trd,trc)
+
+
+      
+
+   
 
 
     return(
@@ -26,24 +41,24 @@ export default function TrialBalance (result) {
                        </tr>
                        
                {result['result'].map((v,i)=>(
-                   <div>
+                   
                    <tr>
                            <td>{v['name']}</td>
                            <td>{v['debit']}</td>
                            <td>{v['credit']}</td>
                        </tr>
-                       <tr>
-                       <td>Total</td>
-                           <td>{v['debit'].reduce(addall)}</td>
-                           <td>{v['credit'].reduce(addall)}</td>
-
-                       </tr>
-                       </div>
+                       
+                       
                        
                        
 
                    
                ))}
+               <tr>
+                   <td></td>
+                   <td>{trd}</td>
+                   <td>{trc}</td>
+               </tr>
                </table>
            </div>:<h2>Nothing in here</h2>
             }
