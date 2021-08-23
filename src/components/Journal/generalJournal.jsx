@@ -8,6 +8,8 @@ export default function GeneralJournal() {
     const [debit, setdeb] = useState()
     const [credit, setcred] = useState()
     const [val, setval] = useState()
+    const [debst,setDebst]=useState("Owner equity")
+    const [credst,setCredst]=useState("Owner equity")
     //actual journal
     const [journal, setjournal] = useState([])
     const accts = []//for getting taccounts name from firebase
@@ -54,6 +56,8 @@ export default function GeneralJournal() {
             generjournal.credit = credit
             generjournal.debit = debit
             generjournal.value = Number(val)
+            generjournal.crstat=credst
+            generjournal.debst=debst
 
 
 
@@ -66,7 +70,7 @@ export default function GeneralJournal() {
             console.log(journal, "journal")
             console.log(generjournal, 'generaljournal')
             // now firebase work for generaljournal
-            // firebase.database().ref('/').child('generalentries').push(generjournal)
+            firebase.database().ref('/').child('generalentries').push(generjournal)
             // for taccount
             var taccounttemp = {}
             console.log(tac.includes(generjournal['credit']),tac.includes(generjournal['debit']))
@@ -215,8 +219,26 @@ export default function GeneralJournal() {
                             <tr>
                                 <td>{datetoday()}</td>
                                 <td><input type='text' value={acc} onChange={(e) => setacc(e.target.value)} placeholder='Account'></input></td>
-                                <td><input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit'></input></td>
-                                <td> <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit'></input></td>
+                                <td>
+                                    <input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit'></input>
+                                    <select onChange={(e)=>setDebst(e.target.value)}>
+                                        <option>Owner equity</option>
+                                        <option>Asset</option>
+                                        <option>Revenue</option>
+                                        <option>Expense</option>
+
+                                    </select>
+                                </td>
+                                <td>
+                                     <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit'></input> 
+                                     <select onChange={(e)=>setCredst(e.target.value)}>
+                                        <option>Owner equity</option>
+                                        <option>Asset</option>
+                                        <option>Revenue</option>
+                                        <option>Expense</option>
+
+                                    </select>
+                                </td>
                                 <td><input type='text' value={val} onChange={(e) => setval(e.target.value)} placeholder='Value'></input></td>
 
                             </tr>
