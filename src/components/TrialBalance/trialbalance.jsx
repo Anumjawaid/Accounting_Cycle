@@ -1,12 +1,13 @@
 import React,{useState,useEffect} from 'react'
 import firebase from '../configuration/firebase'
 import './style.css'
+import {Link} from 'react-router-dom'
 
 
 export default function TrialBalance (result) {
 
-   console.log(result['result'][0]['name'],"result coming from trial balance",result.length)
-   var trial={}
+//    console.log(result['result'][0]['name'],"result coming from trial balance",result.length)
+//    var trial={}
    
        console.log(result,"coming from taccounts")
        console.log(result['result'],"coming ")
@@ -60,6 +61,7 @@ export default function TrialBalance (result) {
                    <td>{trc}</td>
                </tr>
                </table>
+               <Link to='income'>Balnace sheet</Link>
            </div>:<h2>Nothing in here</h2>
             }
             
