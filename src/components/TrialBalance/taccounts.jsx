@@ -6,6 +6,7 @@ import TrialBalance from './trialbalance'
 
 
 export default function Taccounts (){
+    const [page,setPage]=useState('tacc')
     let [tacc,setTacc]=useState([])
     var acc=[]
     firebase.database().ref('/').child('Taccounts').on('child_added',((s,i)=>(
@@ -68,6 +69,7 @@ export default function Taccounts (){
     // result1()
     return(
         <>
+        {page=='tacc'? 
         <div>
         <h2>Taccounts</h2>
         {
@@ -102,9 +104,11 @@ export default function Taccounts (){
                                 </div>
             ))
         }
-       
+       <button onClick={()=>setPage('income')}>Trial Balance</button>
         </div>
-        <TrialBalance result={a }/>
+        
+        :<TrialBalance result={a }/> }
+        {/* <TrialBalance result={a }/> */}
 
         </>
     )
