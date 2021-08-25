@@ -100,7 +100,7 @@ export default function GeneralJournal() {
                     {
                         name:tacdata[ind]['name'],
                         credit:place,
-                        debit:[tacdata[ind]['debit']]
+                        debit:tacdata[ind]['debit']
                     }
                 )
                 // debit update
