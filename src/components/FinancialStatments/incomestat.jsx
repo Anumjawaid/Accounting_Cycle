@@ -16,6 +16,7 @@ export default function IncomeStat() {
     let [tacc, setTacc] = useState([])
     const a=0;
     
+    
     firebase.database().ref('/').child('generalentries').on('child_added',((s) => (
         gen.push(s.val())
     )))
@@ -110,11 +111,13 @@ export default function IncomeStat() {
 
     return (
         <>
+        {/* {setPage('income')} */}
         {page == 'income'?
         <div>
         <h1>Balance sheet</h1>
+        <button onClick={()=>setPage('income')}>Reveal</button>
         <div class='incomestatment'>
-            <h2>Income Statment</h2>
+            <h2>Income Statments</h2>
             {/* All Rrevenues all expenses */}
             <table>
                 <tr>

@@ -46,7 +46,7 @@ export default function GeneralJournal() {
 
     const generjournal = {}
     const addEntry = () => {
-        if (acc == ' ' || debit == ' ' || credit == ' ' || val == ' ') {
+        if (acc == '' || debit == '' || credit == '' || val == '') {
             alert("PLEASE FILL ALL DETAILS BATAMEEZI NAHI ")
         }
         else {
