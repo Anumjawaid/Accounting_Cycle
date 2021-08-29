@@ -13,6 +13,7 @@ export default function IncomeStat() {
     var acc=[]
     let [genentry, setGenEntry] = useState([])
     var[page,setPage]=useState("income")
+var [ab,setAb]=useState('no')
     let [tacc, setTacc] = useState([])
     const a=0;
     
@@ -101,8 +102,10 @@ export default function IncomeStat() {
         console.log('error')
     }
     
-    
+    var ne=tr-te
+    console.log(ne,"netincome")
     console.log(revname,expname,allrev,allexp,ne,"hh")
+    console.log('ne',ne)
 
 
 
@@ -114,8 +117,10 @@ export default function IncomeStat() {
         {/* {setPage('income')} */}
         {page == 'income'?
         <div>
-        <h1>Balance sheet</h1>
-        <button onClick={()=>setPage('income')}>Reveal</button>
+            <div>{ab == 'no' ?<div>
+            <h1>Balance sheet</h1>
+            <button onClick={()=>setAb('yes')}>Reveal</button> </div>:<div>
+            <h1>Balance sheet</h1>
         <div class='incomestatment'>
             <h2>Income Statments</h2>
             {/* All Rrevenues all expenses */}
@@ -162,7 +167,8 @@ export default function IncomeStat() {
                 
             </table>
             <button onClick={()=>setPage('ownerquity')}>Owner Equity</button>
-        </div>
+        </div></div>}</div>
+       
     </div>
         : 
         <OwnerEquity gen={genentry} ne={ne} tac={tacc}/>}

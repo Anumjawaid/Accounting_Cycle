@@ -74,7 +74,9 @@ export default function GeneralJournal() {
             var taccounttemp = {}
             console.log(tac.includes(generjournal['credit']),tac.includes(generjournal['debit']))
             if(tac.length==0 ||(!(tac.includes(generjournal['credit'])) && !(tac.includes(generjournal['debit']))))
+
             {
+                console.log("1st case")
                 firebase.database().ref('/').child('Tnames').push(generjournal['credit'])
                 firebase.database().ref('/').child('Tnames').push(generjournal['debit'])
                 taccounttemp.name=generjournal['credit']
@@ -88,6 +90,7 @@ export default function GeneralJournal() {
 
             }
             else if(tac.includes(generjournal['credit']) && tac.includes(generjournal['debit'])){
+                console.log('2nd cse')
                 // both updated
                 var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['credit']))
                 var keyacc=keydata[ind]
@@ -120,6 +123,7 @@ export default function GeneralJournal() {
             }
             else{
                 if(tac.includes(generjournal['credit'])){
+                    console.log('3rd case')
                     // update the credit entry for this name and add new entry to debit
                     var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['credit']))
                     var keyacc=keydata[ind]
@@ -148,6 +152,7 @@ export default function GeneralJournal() {
                 }
                 else{
                     // update the debit entry and add  new to credit
+                    console.log('4th case')
                     console.log(tacdata.keys(),"coming from updated debit")
                     var ind=tacdata.findIndex((s,i)=>(tacdata[i]['name']==generjournal['debit']))
                     var keyacc=keydata[ind]
@@ -222,6 +227,8 @@ export default function GeneralJournal() {
                                     <input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit'></input>
                                     <select onChange={(e)=>setDebst(e.target.value)}>
                                         <option>Owner equity</option>
+                                        <option>Liability</option>
+                                        <option>Owner withdrawl</option>
                                         <option>Asset</option>
                                         <option>Revenue</option>
                                         <option>Expense</option>
@@ -231,7 +238,9 @@ export default function GeneralJournal() {
                                 <td>
                                      <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit'></input> 
                                      <select onChange={(e)=>setCredst(e.target.value)}>
-                                        <option>Owner equity</option>
+                                     <option>Owner equity</option>
+                                        <option>Liability</option>
+                                        <option>Owner withdrawl</option>
                                         <option>Asset</option>
                                         <option>Revenue</option>
                                         <option>Expense</option>

@@ -1,15 +1,28 @@
-import React, { useState, useEffect } from 'react'
-import firebase from '../configuration/firebase'
+import React, { useState} from 'react'
+import BalanceSheet from './balancesheet'
 
 export default function OwnerEquity ({gen,ne,tac}){
     // target owner equity owner withdrawl,ne add owner equit+netincome then - owner withdrawl
+    
+
+
+
+
+    console.log(gen,tac,ne)
     var ow=[]
     var oe=[]
+    var [page,setpage]=useState('no')
+    var [ab,setAb]=useState('owner')
+
     gen.map((v,i)=>(
-        v['crstat']=='owner equity' ? oe.push(v['name']):console.log('oe'),
-        v['debst']=='owner withdrawl' ? ow.push(v['name']):console.log('ow')
+        console.log(v['crstat'],v['crstat']=='Owner equity',v['name'],'gc'),
+        v['crstat']=='Owner equity' ? oe.push(v['credit']):console.log('oe'),
+        v['debst']=='Owner equity' ? oe.push(v['debit']):console.log('oe'),
+        v['crstat']=='Owner withdrawl' ? ow.push(v['credit']):console.log('ow'),
+        v['debst']=='Owner withdrawl' ? ow.push(v['debit']):console.log('ow')
 
     ))
+    console.log(oe,'oe')
     function getUnique(array){
         var uniqueArray = [];
         
@@ -26,10 +39,11 @@ export default function OwnerEquity ({gen,ne,tac}){
     ow=getUnique(ow)
     oe=getUnique(oe)
     tac.map((v,i)=>(
-        ow.includes(v['name']) ? oeval.push(v):console.log("no oe entry"),
-        oe.includes(v['name']) ? owval.push(v):console.log("no ow entry")
+        ow.includes(v['name']) ? owval.push(v):console.log("no oe entry"),
+        oe.includes(v['name']) ? oeval.push(v):console.log("no ow entry")
 
     ))
+    console.log('oeval',oeval)
 
 
 
@@ -45,6 +59,7 @@ export default function OwnerEquity ({gen,ne,tac}){
             v['debit'].map((v,i)=>(d+=v)),
             v['credit'].map((v,i)=>(c+=v)),
             resoe=d-c,
+            console.log('ss',resoe),
             
             resoe >=0 ? (v['debit']=resoe,v['credit']=''): (v['credit']=Math.abs(resoe),v['debit']=''),
             alloe += resoe
@@ -69,20 +84,23 @@ export default function OwnerEquity ({gen,ne,tac}){
           console.log("error")
       }
       var sumoe=ne+alloe
+      console.log(oe,oeval,'oe')
       console.log(sumoe,"totaloe")
        
 
 
 
-
-
-
-
-    console.log(gen,tac,ne)
     return(
         <>
         <div>
-            <h3>Owner Equity Statment</h3>
+        {ab=='owner'?
+            <div>
+                
+                {page=='no' ? <div>
+            <h1>Balance sheet</h1>
+            <button onClick={()=>setpage('yes')}>Reveal</button> </div>:
+            <div>
+                <h3>Owner Equity Statment</h3>
             <table>
                 <tr>
                     <th>Owner EquityStatment</th>
@@ -130,6 +148,13 @@ export default function OwnerEquity ({gen,ne,tac}){
                     </tr>
                 
             </table>
+            <button onClick={()=>setAb('o')}>Balance Sheet</button>
+                </div>}
+            </div>
+            :
+            <BalanceSheet ge={gen} ne={ne} tac={tac} oe={sumoe} />
+            }
+            
 
         </div>
 

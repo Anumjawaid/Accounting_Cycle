@@ -7,42 +7,31 @@ function Inventory(){
     var [page,setPage]=useState()
     var t
 
-    // async function fetch (){
-    //     const a=await firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(
-    //         b.push(s.val())
-    //     ))
-    //     return a
-    // }
-    // console.log("aa")
     
-    // // fetch()
-    // useEffect(()=>(
-    //     console.log(fetch(),'lk'),
-    //     // setState(b),
-    //     setState(b),
-    //     console.log(b,'see from useState'),
-    //     console.log(st,"st"),
-    //     // setPage('invenory')
-    //     console.log('inventory')
-    // ),[])
-    firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(b.push(s.val())))
+    // firebase.database().ref('/').child('Taccounts').on('child_added',(s)=>(b.push(s.val())))
     
-    // useEffect(()=>(
-    //   setPage(b),
-    //   console.log(b,page,'fghj')
-    //   ,setState()
-    // ),[])
-    useEffect(()=>(
-        console.log(st,'khh')
-        ,setState(b)
-    ),[])
-    // setPage()
-    console.log(b,st,"bbb")
-    t=0
+   
+    useEffect(()=>{
+        firebase.database().ref('/').child('Taccounts').on('value',(s)=>(
+            b.push(s.val())
+        ))
+        setState(b)
+    },[])
+   
+    console.log(b,st,'hhhi')
+    // console.log(page,'hhhiio')
+    const MyContext = React.createContext(st);
+    console.log(MyContext,'context yy')
     return(
         <>
 
 <h2>Inventory</h2>
+{
+    st.length?st.map((v,i)=>(
+        <h1>{v}</h1>
+    ))
+    :<h3>Nothing in here</h3>
+}
         </>
     )
 }
