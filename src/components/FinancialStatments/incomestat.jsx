@@ -185,11 +185,14 @@ var [ab,setAb]=useState('no')
                                {/* <td>{v['debit']}</td>
                                <td>{v['credit']}</td> */}
                                {resultrev[i]>=0?(
-                                   <td></td>,
+                                   <div>
+                                   
                                    <td>{resultrev[i]}</td>
+                                   </div>
                                ):
-                               (
-                                <td>{resultrev[i]}</td>,<td></td>)
+                               (<div>
+                                <h3>{resultrev[i]}</h3><h3></h3>
+                                </div>)
                                }
                            </tr> 
                         ))
@@ -203,11 +206,14 @@ var [ab,setAb]=useState('no')
                            <tr>
                                <td>{v['name']}</td>
                                {resultexp[i]>=0?(
-                                   <td></td>,
+                                   <div>
                                    <td>{resultexp[i]}</td>
+                                   </div>
                                ):
                                (
-                                <td>{resultexp[i]}</td>,<td></td>)
+                                <div>
+                                <td>{resultexp[i]}</td>
+                                </div>)
                                }
                            </tr> 
                         ))
