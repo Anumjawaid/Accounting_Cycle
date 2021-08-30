@@ -37,8 +37,19 @@ var [ab,setAb]=useState('no')
     console.log(tacc,'taccounts')
     var revname=[]
     var expname=[]
+    var allrev=[]
+    var allexp=[]
+    var resultrev=[]
+    var resultexp=[]   //result1 rev result2 exp
+    var d=0
+    var c=0
+    var te=0
+    var tr=0
+    var ne=[]
     gen.map((v,i)=>(
         v['crstat']=='Revenue' ? revname.push(v['credit']):console.log("not"),
+        v['debst']=='Revenue' ? revname.push(v['debit']):console.log("not"),
+        v['crstat']=='Expense' ? expname.push(v['credit']):console.log("not"),
         v['debst']=='Expense'?expname.push(v['debit']):console.log("no debit")
 
     ))
@@ -55,10 +66,10 @@ var [ab,setAb]=useState('no')
     }
     console.log(revname,'46')
     revname=getUnique(revname)
+    expname=getUnique(expname)
     console.log(revname,'487')
 
-    var allrev=[]
-    var allexp=[]
+    
 
     tacc.map((v,i)=>(
         revname.includes(v['name']) ? allrev.push(v):console.log("no rev entry"),
@@ -66,21 +77,14 @@ var [ab,setAb]=useState('no')
     ))
   
 
-    var result1,result2   //result1 rev result2 exp
-    var d=0
-    var c=0
-    var te=0
-    var tr=0
+   
     try{
     allrev.map((v,i)=>(
-        revname.includes(v['name']) ?console.log(v['name'],v['debit'],v['credit'],"howsthat"):console.log('why you'),
         v['debit'].map((s,i)=>(console.log(d+=s,'d'))),
         v['credit'].map((v,i)=>(console.log(c+=v,"c"))),
-        result1=d-c,
-        tr+=Math.abs(result1),
-        console.log(tr,'result'),
-
-        result1 >=0 ? (v['debit']=result1,v['credit']=''): (v['credit']=Math.abs(result1),v['debit']='')
+        resultrev.push(d-c)
+        ,d=0,
+        c=0
     ))
     d=0
     c=0
@@ -89,24 +93,61 @@ var [ab,setAb]=useState('no')
         revname.includes(v['name']) ?console.log(v['name'],v['debit'],v['credit'],"howsthat"):console.log('why you'),
         v['debit'].map((s,i)=>(console.log(d+=s,'d'))),
         v['credit'].map((v,i)=>(console.log(c+=v,"c"))),
-        result2=d-c,
-        te+=result2,
-        // console.log(te,'sjow'),
-        
-        result2 >=0 ? (v['debit']=result2,v['credit']=''): (v['credit']=Math.abs(result2),v['debit']='')
+        resultexp.push(d-c)
+
     ))
-    var ne=tr-te
-    console.log(ne,"netincome")
+    // console.log(tr-te,tr,te,'ne')
+    // ne.push(tr-te)
+    // console.log(ne,"netincome")
     }
     catch{
         console.log('error')
     }
     
-    var ne=tr-te
-    console.log(ne,"netincome")
-    console.log(revname,expname,allrev,allexp,ne,"hh")
-    console.log('ne',ne)
+    // var ne=tr-te
+    // console.log(ne,"netincome")
+    // console.log(revname,expname,allrev,allexp,ne,"hh")
+    // console.log('ne',ne[0])
+    function myFunc(total, num) {
+        return total +num;
+      }
+    //   console.log(resultrev.reduce(myFunc)-resultexp.reduce(myFunc),'ne')
+    var ne=0
+    try{
+        if(resultrev.length==0){
+            ne=0-resultexp.reduce(myFunc)
+    
+        }
+        else if(resultexp.length==0){
+            ne=resultrev.reduce(myFunc)-0
+        }
+        else if(resultrev.length==0 || resultexp.length==0){
+    
+            console.log("l")
+        }
+        else{
+            ne=resultrev.reduce(myFunc)-resultexp.reduce(myFunc)
+        }
+    }
+    catch{
+        console.log("error")
 
+    }
+    // if(resultrev.length==0){
+    //     ne=0-resultexp.reduce(myFunc)
+
+    // }
+    // else if(resultexp.length==0){
+    //     ne=resultrev.reduce(myFunc)-0
+    // }
+    // else if(resultrev.length==0 || resultexp.length==0){
+
+    //     console.log("l")
+    // }
+    // else{
+    //     ne=resultrev.reduce(myFunc)-resultexp.reduce(myFunc)
+    // }
+    console.log(resultrev,resultexp,ne,'kj')
 
 
 
@@ -141,8 +182,15 @@ var [ab,setAb]=useState('no')
                         allrev.map((v,i)=>(
                            <tr>
                                <td>{v['name']}</td>
-                               <td>{v['debit']}</td>
-                               <td>{v['credit']}</td>
+                               {/* <td>{v['debit']}</td>
+                               <td>{v['credit']}</td> */}
+                               {resultrev[i]>=0?(
+                                   <td></td>,
+                                   <td>{resultrev[i]}</td>
+                               ):
+                               (
+                                <td>{resultrev[i]}</td>,<td></td>)
+                               }
                            </tr> 
                         ))
                     }
@@ -154,15 +202,20 @@ var [ab,setAb]=useState('no')
                         allexp.map((v,i)=>(
                            <tr>
                                <td>{v['name']}</td>
-                               <td>{v['debit']}</td>
-                               <td>{v['credit']}</td>
+                               {resultexp[i]>=0?(
+                                   <td></td>,
+                                   <td>{resultexp[i]}</td>
+                               ):
+                               (
+                                <td>{resultexp[i]}</td>,<td></td>)
+                               }
                            </tr> 
                         ))
                     }
                     <tr>
                         <td>Net Income</td>
                         <td>Revenue-Expensee</td>
-                        <td>{ne}</td>
+                        {<td>{ne}</td>}
                     </tr>
                 
             </table>

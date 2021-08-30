@@ -13,6 +13,12 @@ export default function OwnerEquity ({gen,ne,tac}){
     var oe=[]
     var [page,setpage]=useState('no')
     var [ab,setAb]=useState('owner')
+    var d=0
+    var c=0
+    var resoe=[]
+    var alloe=0
+    var allow=0
+    var resow=[]
 
     gen.map((v,i)=>(
         console.log(v['crstat'],v['crstat']=='Owner equity',v['name'],'gc'),
@@ -47,33 +53,24 @@ export default function OwnerEquity ({gen,ne,tac}){
 
 
 
-    var d=0
-    var c=0
-    var resoe
-    var alloe
-    var allow
-    var resow
+    
     // Get all owner equity and all owner withdrawl sum them up then conclide final equity which is oe+ni-Ow
       try{
         oeval.map((v,i)=>(
-            v['debit'].map((v,i)=>(d+=v)),
-            v['credit'].map((v,i)=>(c+=v)),
-            resoe=d-c,
-            console.log('ss',resoe),
+            v['debit'].map((s,i)=>(console.log(d+=s,"d"))),
+            v['credit'].map((s,i)=>(console.log(c+=s,"c"))),
+            console.log(d,c,d-c),
+            resoe.push(d-c),d=0,
+            c=0
             
-            resoe >=0 ? (v['debit']=resoe,v['credit']=''): (v['credit']=Math.abs(resoe),v['debit']=''),
-            alloe += resoe
 
             ))
             d=0
             c=0
             owval.map((v,i)=>(
-                v['debit'].map((v,i)=>(d+=v)),
-                v['credit'].map((v,i)=>(c+=v)),
-                resow=d-c,
-                
-                resow >=0 ? (v['debit']=resoe,v['credit']=''): (v['credit']=Math.abs(resoe),v['debit']=''),
-                allow += resow
+                v['debit'].map((s,i)=>(d+=s)),
+                v['credit'].map((s,i)=>(c+=s)),
+                resow.push(d-c)
     
                 ))
 
@@ -83,8 +80,35 @@ export default function OwnerEquity ({gen,ne,tac}){
       catch{
           console.log("error")
       }
-      var sumoe=ne+alloe
-      console.log(oe,oeval,'oe')
+      function myFunc(total, num) {
+        return total +num;
+      }
+    //   console.log(resultrev.reduce(myFunc)-resultexp.reduce(myFunc),'ne')
+    var sumoe=0
+    try{
+        if(resoe.length==0){
+            sumoe=0-resow.reduce(myFunc)
+
+    
+        }
+        else if(resow.length==0){
+            sumoe=resoe.reduce(myFunc)-0
+        }
+        else if(resoe.length==0 || resow.length==0){
+    
+            console.log("l")
+        }
+        else{
+            sumoe=resoe.reduce(myFunc)-resow.reduce(myFunc)
+        }
+    }
+    catch{
+        console.log("error")
+    }
+    console.log(oe,ow,'k')
+      console.log(resoe,resow,'jkk')
+      sumoe=ne+sumoe
+      console.log(oe,oeval,resoe,resow,'oe')
       console.log(sumoe,"totaloe")
        
 
@@ -118,14 +142,23 @@ export default function OwnerEquity ({gen,ne,tac}){
                         oeval.map((v,i)=>(
                            <tr>
                                <td>{v['name']}</td>
-                               <td>{v['debit']}</td>
-                               <td>{v['credit']}</td>
+                               {/* <td>{v['debit']}</td>
+                               <td>{v['credit']}</td> */}
+                               {
+                                   resoe[i]>=0?( <td></td>,
+                                    <td>{resoe[i]}</td>
+                                ):
+                                (
+                                 <td>{resoe[i]}</td>,<td></td>)
+                                
+                               }
                            </tr> 
                         ))
                     }
                        <tr>
                            <tr>
                                <td>Net Income</td>
+                               <td> </td>
                                <td>{ne}</td>
                            </tr>
                     
@@ -136,8 +169,14 @@ export default function OwnerEquity ({gen,ne,tac}){
                         owval.map((v,i)=>(
                            <tr>
                                <td>{v['name']}</td>
-                               <td>{v['debit']}</td>
-                               <td>{v['credit']}</td>
+                               {
+                                   resow[i]>=0?( <td></td>,
+                                    <td>{resow[i]}</td>
+                                ):
+                                (
+                                 <td>{resow[i]}</td>,<td></td>)
+                                
+                               }
                            </tr> 
                         ))
                     }
