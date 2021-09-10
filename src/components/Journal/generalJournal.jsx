@@ -3,6 +3,7 @@ import './style.css'
 import firebase from '../configuration/firebase'
 import { Link } from 'react-router-dom'
 import sidebar from './sidebar'
+import Nothing from '../TrialBalance/nothing'
 
 export default function GeneralJournal() {
     const[acc,setacc]=useState()
@@ -231,7 +232,7 @@ console.log(show,)
                     </div>
                 </div>
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12 cent">
                         <table id='genejou'>
                             <tr>
                                 <th>Date</th>
@@ -290,7 +291,11 @@ console.log(show,)
                                 ))
                                 // <h3>We have something to show</h3>
 
-                                : <h2>Nothing to show</h2>}
+                                : <>
+                                <div className="center" >
+                                <Nothing style={{marginLeft:'600px'}}/>
+                                </div>
+                                </>}
 
 
                             <tr>

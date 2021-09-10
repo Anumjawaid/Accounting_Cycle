@@ -123,3 +123,37 @@ th{
     text-align: center;
 
 }
+.s1{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.s2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.white{
+    color: whitesmoke !important;
+}
+.journalt,.tacct,.trialt,.statmentt,.closingt{
+    background-color: rgb(93, 153, 4);
+    padding:40px;
+    width: 150%;
+    margin-top:20px;
+    margin-bottom:50px;
+    margin-right: 20px;
+    text-align: center;
+    box-shadow: 5px  2px 0px 0px rgb(119, 116, 116);
+}
+.journalt:hover,.tacct:hover,.trialt:hover,.statmentt:hover,.closingt:hover{
+    background-color: rgb(117, 190, 8);
+    padding:45px;
+
+}
+
+.fcol{
+    display:flex;
+    flex-direction:column;
+
+}

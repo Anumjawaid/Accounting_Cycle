@@ -21,7 +21,7 @@ export default function TrialBalance() {
     getData()
     useEffect(()=>(
         setst(a)
-    ),[])
+    ),[a])
 
     console.log(st, "coming from taccountsfj")
     st.map((v,i)=>v['result']>=0?d+=v['result']:c+=v['result'])

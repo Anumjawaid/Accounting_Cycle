@@ -32,7 +32,7 @@ console.log("in here")
         //  console.log('values',val,val.length)
          setst(val),
          settacc(acc)
-     ),[])
+     ),[val])
     // all rev all exp all ow sum and close then shift to income and that income
     //  is shift tolast tial balance
     if(st.length!=0){

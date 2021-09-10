@@ -3,6 +3,7 @@ import firebase from '../configuration/firebase'
 import './style.css'
 import {Link} from 'react-router-dom'
 import TrialBalance from './trialbalance'
+import Nothing from '../TrialBalance/nothing'
 
 
 export default function Taccounts (){
@@ -14,7 +15,7 @@ export default function Taccounts (){
     useEffect(()=>(
         setTacc(acc)
     ),
-    [])
+    [acc])
     console.log(tacc,'taccounts')
     return(
         <>

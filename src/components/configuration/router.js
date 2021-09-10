@@ -7,11 +7,13 @@ import TrialBalance from '../TrialBalance/trialbalance'
 import IncomeStat from '../FinancialStatments/incomestat'
 import Inventory from '../Inventory/inventory'
 import Closing from '../FinancialStatments/closing'
+import Home from '../home'
 class AppRouter extends React.Component{
     render(){
         return(
             <Router>
-                <Route  exact path='/' component={GeneralJournal}></Route> 
+                <Route  exact path='/' component={Home}></Route> 
+                <Route   path='/journal' component={GeneralJournal}></Route> 
                 <Route path='/tacc' component={Taccounts}/>
                 <Route path='/trial' component={TrialBalance}></Route>
                 <Route path='/income' component={IncomeStat}></Route>
