@@ -13,8 +13,9 @@ export default function IncomeStat() {
     var acc=[]
     let [genentry, setGenEntry] = useState([])
     var[page,setPage]=useState("income")
-var [ab,setAb]=useState('no')
     let [tacc, setTacc] = useState([])
+    var expt=0
+    var revt=0
     const a=0;
     
     
@@ -27,12 +28,12 @@ var [ab,setAb]=useState('no')
     useEffect(()=>(
         setTacc(acc)
 
-    ),[a])
+    ),[acc])
     useEffect(()=>(
         
         setGenEntry(gen)
 
-    ),[a])
+    ),[gen])
     console.log(genentry,'generalentry')
     console.log(tacc,'taccounts')
     var revname=[]
@@ -80,20 +81,13 @@ var [ab,setAb]=useState('no')
    
     try{
     allrev.map((v,i)=>(
-        v['debit'].map((s,i)=>(console.log(d+=s,'d'))),
-        v['credit'].map((v,i)=>(console.log(c+=v,"c"))),
-        resultrev.push(d-c)
-        ,d=0,
-        c=0
+        revt+=v['result']
     ))
-    d=0
-    c=0
+    
     
     allexp.map((v,i)=>(
-        revname.includes(v['name']) ?console.log(v['name'],v['debit'],v['credit'],"howsthat"):console.log('why you'),
-        v['debit'].map((s,i)=>(console.log(d+=s,'d'))),
-        v['credit'].map((v,i)=>(console.log(c+=v,"c"))),
-        resultexp.push(d-c)
+        expt+=v['result']
+       
 
     ))
     // console.log(tr-te,tr,te,'ne')
@@ -104,50 +98,9 @@ var [ab,setAb]=useState('no')
         console.log('error')
     }
     
-    // var ne=tr-te
-    // console.log(ne,"netincome")
-    // console.log(revname,expname,allrev,allexp,ne,"hh")
-    // console.log('ne',ne[0])
-    function myFunc(total, num) {
-        return total +num;
-      }
-    //   console.log(resultrev.reduce(myFunc)-resultexp.reduce(myFunc),'ne')
-    var ne=0
-    try{
-        if(resultrev.length==0){
-            ne=0-resultexp.reduce(myFunc)
-    
-        }
-        else if(resultexp.length==0){
-            ne=resultrev.reduce(myFunc)-0
-        }
-        else if(resultrev.length==0 || resultexp.length==0){
-    
-            console.log("l")
-        }
-        else{
-            ne=resultrev.reduce(myFunc)-resultexp.reduce(myFunc)
-        }
-    }
-    catch{
-        console.log("error")
-
-    }
-    // if(resultrev.length==0){
-    //     ne=0-resultexp.reduce(myFunc)
-
-    // }
-    // else if(resultexp.length==0){
-    //     ne=resultrev.reduce(myFunc)-0
-    // }
-    // else if(resultrev.length==0 || resultexp.length==0){
-
-    //     console.log("l")
-    // }
-    // else{
-    //     ne=resultrev.reduce(myFunc)-resultexp.reduce(myFunc)
-    // }
-    console.log(resultrev,resultexp,ne,'kj')
+    var ne=revt-expt
+  
+    console.log(ne,revt,expt,'check')
 
 
 
@@ -157,76 +110,64 @@ var [ab,setAb]=useState('no')
         <>
         {/* {setPage('income')} */}
         {page == 'income'?
-        <div>
-            <div>{ab == 'no' ?<div>
+        <div className='cent'>
+            {/* <div>{ab == 'no' ?<div> */}
+            {/* <h1>Balance sheet</h1>
+            <button onClick={()=>setAb('yes')}>Reveal</button> </div>:<div> */}
+            <div >
             <h1>Balance sheet</h1>
-            <button onClick={()=>setAb('yes')}>Reveal</button> </div>:<div>
-            <h1>Balance sheet</h1>
-        <div class='incomestatment'>
+        <div className='incomestatment'>
             <h2>Income Statments</h2>
+
             {/* All Rrevenues all expenses */}
-            <table>
-                <tr>
-                    <th>Income Statment</th>
-                </tr>
-                <tr>
-                    <th>Accounts Head</th>
-                     <th>Debit</th>
-                     <th>Credit</th>
-                </tr>
-                <tr>
-                    <td>All Revenues</td>
-                    
-                </tr>
-                {
-                        allrev.map((v,i)=>(
-                           <tr>
-                               <td>{v['name']}</td>
-                               {/* <td>{v['debit']}</td>
-                               <td>{v['credit']}</td> */}
-                               {resultrev[i]>=0?(
-                                   <div>
-                                   
-                                   <td>{resultrev[i]}</td>
-                                   </div>
-                               ):
-                               (<div>
-                                <h3>{resultrev[i]}</h3><h3></h3>
-                                </div>)
-                               }
-                           </tr> 
-                        ))
-                    }
-                       <tr>
-                    <td>All Expenses</td>
-                    
-                </tr>
-                {
-                        allexp.map((v,i)=>(
-                           <tr>
-                               <td>{v['name']}</td>
-                               {resultexp[i]>=0?(
-                                   <div>
-                                   <td>{resultexp[i]}</td>
-                                   </div>
-                               ):
-                               (
-                                <div>
-                                <td>{resultexp[i]}</td>
-                                </div>)
-                               }
-                           </tr> 
-                        ))
-                    }
-                    <tr>
-                        <td>Net Income</td>
-                        <td>Revenue-Expensee</td>
-                        {<td>{ne}</td>}
-                    </tr>
+
+
+
+            <div className="maintable">
+                <div className="tableheader header">
+                <div className="title">Account</div>
+                             <div className="debit">Debit</div>
+                             <div className="credit">Credit</div>
+                </div>
+                <div className="tabledata1">
+                    {allrev.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {v['result']>=0?<><div className="debit">{Math.abs(v['result'])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(v['result'])}</div></>}
+                        </div>
+                    ))}
+                     {allexp.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {v['result']>=0?<><div className="debit">{Math.abs(v['result'])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(v['result'])}</div></>}
+                        </div>
+                    ))}
+                     
+
+                </div>
                 
-            </table>
-            <button onClick={()=>setPage('ownerquity')}>Owner Equity</button>
-        </div></div>}</div>
+            </div>
+            <div className='tabledata tableheader resback'>
+                             <div className="title accname">Net Income</div>
+                             <div className="debit"> Revenue-Expense</div>
+                             <div className="credi">
+                                 {ne.length>=0?<>{ne}</>:<>({Math.abs(ne)})</>}</div>
+
+
+                                 </div>
+            <button onClick={()=>setPage('ownerquity') }className='linkcon'>Owner Equity</button>
+        </div></div>
+        {/* }</div> */}
        
     </div>
         : 

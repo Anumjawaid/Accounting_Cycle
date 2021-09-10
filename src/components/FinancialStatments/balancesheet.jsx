@@ -1,4 +1,5 @@
 import React, { useState} from 'react'
+import {Link} from 'react-router-dom'
 
 export default function BalanceSheet({ge,ne,tac,oe}){
     // get all assets,oe,liabilities
@@ -84,51 +85,91 @@ export default function BalanceSheet({ge,ne,tac,oe}){
 
 return(
     <>
-    {ab=='owner' ? 
-    <div>
-        <h3>Balance Sheet</h3>
-        <button onClick={()=>setAb('no')}>Reveal</button>
-    </div>
-    :
-    <div>
+ 
+    <div className='cent'>
         <h3>Balance sheet</h3>
-        <div className='balance' style={{display:'flex',flexDirection:'row'}}>
+        
+        <div className='balance' style={{alignItems:'center',justifyContent:"space-evenly"}}>
             <div className='asset'>
             <h3>Asset</h3>
             <div className="maintable">
-                <div className="tablehead" style={{display:'flex',flexDirection:'row' }}><div>Account</div><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}>Debit</div><div>Credit</div></div>
-                <div className='tabledata'>{vass.map((v,i)=>
-                (<div style={{display:'flex',flexDirection:'row' }}><div className="accname">
-                    {v['name']}</div>
-                    {rass[i]>=0?
-                    <div ><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}>{rass[i]}</div><div className="creditdiv"></div></div>
-                    :<div><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}></div><div className="creditdiv" style={{marginRight:'50px',marginLeft:'100px'}}>{rass[i]}</div></div>}
-                    </div>))}
+                <div className="tableheader header">
+                <div className="title">Account</div>
+                             <div className="debit">Debit</div>
+                             <div className="credit">Credit</div>
                 </div>
-            </div>
+                <div className="tabledata1">
+                    {vass.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {rass[i]>=0?<><div className="debit">{Math.abs(rass[i])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(rass[i])}</div></>}
+                        </div>
+                    ))}
+                     </div>
+                
+                </div>
+                <div className='tabledata tableheader resback'>
+                                 <div className="title accname">Total</div>
+                                 <div className="debit" style={{marginRight:'10px'}}> </div>
+                                 <div className="credi">
+                                     {a>=0?<>{a}</>:<>({Math.abs(a)})</>}</div>
+    
+    
+                                     </div>
+           
 
               </div>
               <div className='liability'>
             <h3>Liability</h3>
-            <div className="maintable">
-                <div className="tablehead" style={{display:'flex',flexDirection:'row' }}><div>Account</div><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}>Debit</div><div>Credit</div></div>
-                <div className='tabledata'>{vliab.map((v,i)=>
-                (<div style={{display:'flex',flexDirection:'row' }}><div className="accname">
-                    {v['name']}</div>
-                    {rliab[i]>=0?
-                    <div ><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}>{rliab[i]}</div><div className="creditdiv"></div></div>
-                    :<div><div className="debitdiv" style={{marginRight:'50px',marginLeft:'100px'}}></div><div className="creditdiv" style={{marginRight:'50px',marginLeft:'100px'}}>{rliab[i]}</div></div>}
-                    </div>))}
+          
+ <div className="maintable">
+                <div className="tableheader header">
+                <div className="title">Account</div>
+                             <div className="debit">Debit</div>
+                             <div className="credit">Credit</div>
                 </div>
-            </div>
+                <div className="tabledata1">
+                    {vliab.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {rliab[i]>=0?<><div className="debit">{Math.abs(rliab[i])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(rliab[i])}</div></>}
+                        </div>
+                    ))}
+                     </div>
+                
+                </div>
+                <div className='tabledata tableheader resback'>
+                                 <div className="title accname">Total</div>
+                                 <div className="debit" style={{marginRight:'10px'}}> </div>
+                                 <div className="credi">
+                                     {a>=0?<>{a}</>:<>({Math.abs(a)})</>}</div>
+    
+    
+                                     </div>
+
+
+
+
 
               </div>
         </div>
-        <div className='total'><h3>Asset=Liability+Oe</h3><h3>{a}=({n})+({oe})</h3></div>
+        <div className='total' style={{alignItems:'center'}}><h3>Asset=Liability+Oe</h3><h3>{a}=({n})+({oe})</h3></div>
 
-
+<div className="closinglink">
+    <Link to='/closing' className='linkcon'>Closing</Link>
+</div>
         
-        </div>}
+        </div>
 
 
 

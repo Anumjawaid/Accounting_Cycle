@@ -13,12 +13,8 @@ export default function OwnerEquity ({gen,ne,tac}){
     var oe=[]
     var [page,setpage]=useState('no')
     var [ab,setAb]=useState('owner')
-    var d=0
-    var c=0
-    var resoe=[]
-    var alloe=0
-    var allow=0
-    var resow=[]
+    var resoe=0
+    var resow=0
 
     gen.map((v,i)=>(
         console.log(v['crstat'],v['crstat']=='Owner equity',v['name'],'gc'),
@@ -57,20 +53,11 @@ export default function OwnerEquity ({gen,ne,tac}){
     // Get all owner equity and all owner withdrawl sum them up then conclide final equity which is oe+ni-Ow
       try{
         oeval.map((v,i)=>(
-            v['debit'].map((s,i)=>(console.log(d+=s,"d"))),
-            v['credit'].map((s,i)=>(console.log(c+=s,"c"))),
-            console.log(d,c,d-c),
-            resoe.push(d-c),d=0,
-            c=0
-            
+            resoe+=v['result']
 
             ))
-            d=0
-            c=0
             owval.map((v,i)=>(
-                v['debit'].map((s,i)=>(d+=s)),
-                v['credit'].map((s,i)=>(c+=s)),
-                resow.push(d-c)
+               resow+=v['result']
     
                 ))
 
@@ -80,35 +67,12 @@ export default function OwnerEquity ({gen,ne,tac}){
       catch{
           console.log("error")
       }
-      function myFunc(total, num) {
-        return total +num;
-      }
+      
     //   console.log(resultrev.reduce(myFunc)-resultexp.reduce(myFunc),'ne')
     var sumoe=0
-    try{
-        if(resoe.length==0){
-            sumoe=0-resow.reduce(myFunc)
-
-    
-        }
-        else if(resow.length==0){
-            sumoe=resoe.reduce(myFunc)-0
-        }
-        else if(resoe.length==0 || resow.length==0){
-    
-            console.log("l")
-        }
-        else{
-            sumoe=resoe.reduce(myFunc)-resow.reduce(myFunc)
-        }
-    }
-    catch{
-        console.log("error")
-    }
+    sumoe=ne+resoe-resow
     console.log(oe,ow,'k')
       console.log(resoe,resow,'jkk')
-      sumoe=ne+sumoe
-      console.log(oe,oeval,resoe,resow,'oe')
       console.log(sumoe,"totaloe")
        
 
@@ -118,77 +82,57 @@ export default function OwnerEquity ({gen,ne,tac}){
         <>
         <div>
         {ab=='owner'?
-            <div>
+            <div className='cent'>
                 
-                {page=='no' ? <div>
-            <h1>Balance sheet</h1>
-            <button onClick={()=>setpage('yes')}>Reveal</button> </div>:
+                
             <div>
                 <h3>Owner Equity Statment</h3>
-            <table>
-                <tr>
-                    <th>Owner EquityStatment</th>
-                </tr>
-                <tr>
-                    <th>Accounts Head</th>
-                     <th>Debit</th>
-                     <th>Credit</th>
-                </tr>
-                <tr>
-                    <td>Owner Equity net income</td>
-                    
-                </tr>
-                {
-                        oeval.map((v,i)=>(
-                           <tr>
-                               <td>{v['name']}</td>
-                               {/* <td>{v['debit']}</td>
-                               <td>{v['credit']}</td> */}
-                               {
-                                   resoe[i]>=0?( <td></td>,
-                                    <td>{resoe[i]}</td>
-                                ):
-                                (
-                                 <td>{resoe[i]}</td>,<td></td>)
-                                
-                               }
-                           </tr> 
-                        ))
-                    }
-                       <tr>
-                           <tr>
-                               <td>Net Income</td>
-                               <td> </td>
-                               <td>{ne}</td>
-                           </tr>
-                    
-                </tr>
+
+                <div className="maintable">
+                <div className="tableheader header">
+                <div className="title">Account</div>
+                             <div className="debit">Debit</div>
+                             <div className="credit">Credit</div>
+                </div>
+                <div className="tabledata1">
+                    {oeval.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {v['result']>=0?<><div className="debit">{Math.abs(v['result'])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(v['result'])}</div></>}
+                        </div>
+                    ))}
+                     {owval.map((v,i)=>(
+                        <div className="tabledata tableheader">
+                            <div className="title accname">
+                                {v['name']}
+                            </div>
+                            {v['result']>=0?<><div className="debit">{Math.abs(v['result'])}</div>
+                                  <div className="credit"></div></>
+                                  :<><div className="debit"></div>
+                                  <div className="credit">{Math.abs(v['result'])}</div></>}
+                        </div>
+                    ))}
+                     
+
+                </div>
                 
-                <tr> <td>All Withdrawls</td></tr>
-                {
-                        owval.map((v,i)=>(
-                           <tr>
-                               <td>{v['name']}</td>
-                               {
-                                   resow[i]>=0?( <td></td>,
-                                    <td>{resow[i]}</td>
-                                ):
-                                (
-                                 <td>{resow[i]}</td>,<td></td>)
-                                
-                               }
-                           </tr> 
-                        ))
-                    }
-                    <tr>
-                        <td>final Owner Equity</td>
-                        <td>Oe+Ni-Ow</td>
-                        <td>{sumoe}</td>
-                    </tr>
-                
-            </table>
-            <button onClick={()=>setAb('o')}>Balance Sheet</button>
-                </div>}
+            </div>
+            <div className='tabledata tableheader resback'>
+                             <div className="title accname">Owner Equity Statment</div>
+                             <div className="debit"> Oe+Ni-Ow</div>
+                             <div className="credi">
+                                 {sumoe.length>=0?<>{sumoe}</>:<>({Math.abs(sumoe)})</>}</div>
+
+
+                                 </div>
+            
+            </div>
+            <button onClick={()=>setAb('bal')} className='linkcon'>Balance sheet</button>
             </div>
             :
             <BalanceSheet ge={gen} ne={ne} tac={tac} oe={sumoe} />

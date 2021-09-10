@@ -2,6 +2,7 @@ import react, { useState, useEffect } from 'react'
 import './style.css'
 import firebase from '../configuration/firebase'
 import { Link } from 'react-router-dom'
+import sidebar from './sidebar'
 
 export default function GeneralJournal() {
     const[acc,setacc]=useState()
@@ -20,6 +21,9 @@ export default function GeneralJournal() {
     var [tacdata, settacdata] = useState([])
     var [keydata,setkeydata]=useState([])
 
+    function myFunc(total, num) {
+        return total +num;
+      }
     firebase.database().ref('/').child('Tnames').on('child_added', (s) => (
         accts.push(s.val())
     ))
@@ -82,10 +86,13 @@ export default function GeneralJournal() {
                 taccounttemp.name=generjournal['credit']
                 taccounttemp.credit=[generjournal['value']]
                 taccounttemp.debit=[0]
+                taccounttemp.result=taccounttemp.debit.reduce(myFunc)-taccounttemp.credit.reduce(myFunc)
+
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
                 taccounttemp.name=generjournal['debit']
                 taccounttemp.debit=[generjournal['value']]
                 taccounttemp.credit=[0]
+                taccounttemp.result=taccounttemp.debit.reduce(myFunc)-taccounttemp.credit.reduce(myFunc)
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
 
             }
@@ -103,7 +110,10 @@ export default function GeneralJournal() {
                     {
                         name:tacdata[ind]['name'],
                         credit:place,
-                        debit:tacdata[ind]['debit']
+                        debit:tacdata[ind]['debit'],
+                        result:tacdata[ind]['debit'].reduce(myFunc)-place.reduce(myFunc)
+
+
                     }
                 )
                 // debit update
@@ -115,7 +125,9 @@ export default function GeneralJournal() {
                     {
                         name:tacdata[ind]['name'],
                         debit:place,
-                        credit:tacdata[ind]['credit']
+                        credit:tacdata[ind]['credit'],
+                        result:place.reduce(myFunc)-tacdata[ind]['credit'].reduce(myFunc)
+
                     }
                 )
                 
@@ -136,13 +148,17 @@ export default function GeneralJournal() {
                         {
                             name:tacdata[ind]['name'],
                             credit:place,
-                            debit:tacdata[ind]['debit']
+                            debit:tacdata[ind]['debit'],
+                        result:tacdata[ind]['debit'].reduce(myFunc)-place.reduce(myFunc)
+
                         }
                     )
                     // new to debit
                     taccounttemp.name=generjournal['debit']
                 taccounttemp.debit=[generjournal['value']]
                 taccounttemp.credit=[0]
+                taccounttemp.result=taccounttemp.debit.reduce(myFunc)-taccounttemp.credit.reduce(myFunc)
+
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
                 firebase.database().ref('/').child('Tnames').push(generjournal['debit'])
 
@@ -167,13 +183,17 @@ export default function GeneralJournal() {
                             name:tacdata[ind]['name'],
 
                             debit:place,
-                            credit:tacdata[ind]['credit']
+                            credit:tacdata[ind]['credit'],
+                            result:place.reduce(myFunc)-tacdata[ind]['credit'].reduce(myFunc)
+
                         }
                     )
                     // new to credit
                     taccounttemp.name=generjournal['credit']
                 taccounttemp.credit=[generjournal['value']]
                 taccounttemp.debit=[0]
+                taccounttemp.result=taccounttemp.debit.reduce(myFunc)-taccounttemp.credit.reduce(myFunc)
+
                 firebase.database().ref('/').child('Taccounts').push(taccounttemp)
                 firebase.database().ref('/').child('Tnames').push(generjournal['credit'])
 
@@ -193,20 +213,20 @@ export default function GeneralJournal() {
 
     const datetoday = () => {
         var month = ['Jan', "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"]
-        var days = ['Monday', "Tuesday", "Wednesday", 'Thursday', 'Friday', 'Saturday', 'Sunday']
         var d = new Date();
 
         var date = (d.getUTCDate() + "," + month[d.getMonth()] + "," + d.getFullYear())
-        var day = (days[d.getDay()])
         return date
     }
     // console.log(datetoday)
-
+var [show,setshow]=useState('a')
+console.log(show,)
     return (
         <>
-            <div className="conatiner">
+        <sidebar />
+            <div className="conatiner cent">
                 <div className="row">
-                    <div className="col-md-12">
+                    <div className="col-md-12 cent">
                         <h3>Write your general Journal Entry</h3>
                     </div>
                 </div>
@@ -222,10 +242,13 @@ export default function GeneralJournal() {
                             </tr>
                             <tr>
                                 <td>{datetoday()}</td>
-                                <td><input type='text' value={acc} onChange={(e) => setacc(e.target.value)} placeholder='Account'></input></td>
+                                <td><input type='text' value={acc} onChange={(e) => setacc(e.target.value)}  placeholder='Account'></input></td>
                                 <td>
-                                    <input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit'></input>
-                                    <select onChange={(e)=>setDebst(e.target.value)}>
+                                    <input type='text' value={debit} onChange={(e) => setdeb(e.target.value)} placeholder='Debit' onFocus={()=>setshow('show')}></input>
+                                    {show !='show'
+                                    ?
+                                    console.log('k'):
+                                        <select className='sele' onChange={(e)=>setDebst(e.target.value)}>
                                         <option>Owner equity</option>
                                         <option>Liability</option>
                                         <option>Owner withdrawl</option>
@@ -233,19 +256,22 @@ export default function GeneralJournal() {
                                         <option>Revenue</option>
                                         <option>Expense</option>
 
-                                    </select>
+                                    </select>}
                                 </td>
                                 <td>
-                                     <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit'></input> 
-                                     <select onChange={(e)=>setCredst(e.target.value)}>
-                                     <option>Owner equity</option>
+                                     <input type='text' value={credit} onChange={(e) => setcred(e.target.value)} placeholder='Credit' onFocus={()=>setshow('showw')}></input> 
+                                     {show !='showw'
+                                    ?
+                                    console.log('k'):
+                                        <select className='sele' onChange={(e)=>setCredst(e.target.value)}>
+                                        <option>Owner equity</option>
                                         <option>Liability</option>
                                         <option>Owner withdrawl</option>
                                         <option>Asset</option>
                                         <option>Revenue</option>
                                         <option>Expense</option>
 
-                                    </select>
+                                    </select>}
                                 </td>
                                 <td><input type='text' value={val} onChange={(e) => setval(e.target.value)} placeholder='Value'></input></td>
 
@@ -273,9 +299,8 @@ export default function GeneralJournal() {
                         </table>
                     </div>
                 </div>
-                <div className="container">
-                    <h5>asdfghj</h5>
-                    <Link to='/tacc'>T Accounts</Link>
+                <div className="container" style={{marginTop:'40px'}}>
+                    <Link to='/tacc' className='linkcon' >T Accounts</Link>
                 </div>
             </div>
         </>

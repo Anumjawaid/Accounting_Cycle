@@ -8,8 +8,20 @@ body{
 #genejou th{
     border-collapse: collapse;
     width: 100%;
-    background-color: teal;
+    background-color: rgb(93, 153, 4);
 }
+.sele{
+    background-color: rgb(31, 30, 30);
+    color:white;
+    border-bottom: 1px solid grey;
+    padding:10px;
+    border:1px solid rgb(93, 153, 4);
+}
+.sele option:hover{
+    background-color: rgb(93, 153, 4);
+
+}
+
 #genejou td ,th{
     padding: 10px;
     border:1px solid grey;
@@ -25,5 +37,8 @@ input[type='text']{
 input[type='text']:focus{
     padding:10px;
     border: none;
-    border-bottom: 3px solid red;
+    border-bottom: 3px solid rgb(93, 153, 4);
+}
+#dis{
+    display:none;
 }

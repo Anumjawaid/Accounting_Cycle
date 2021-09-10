@@ -6,7 +6,6 @@ import TrialBalance from './trialbalance'
 
 
 export default function Taccounts (){
-    const [page,setPage]=useState('tacc')
     let [tacc,setTacc]=useState([])
     var acc=[]
     firebase.database().ref('/').child('Taccounts').on('child_added',((s,i)=>(
@@ -16,99 +15,51 @@ export default function Taccounts (){
         setTacc(acc)
     ),
     [])
-    var resultvar=[]
-    var trialstatvar=[]
-    const result = ()=>{
-        // console.log("i am from result arrow function")
-        function myFunc(total, num) {
-            return total +num;
-          }
-        tacc.map((v,i)=>(
-            resultvar.push(v['debit'].reduce(myFunc)-v['credit'].reduce(myFunc))
-        ))
-        console.log(resultvar)
-        return resultvar
-        // resultvar.push(1)
-        // return resultvar
-    }
-    
-
-    console.log(tacc,"dd")
-    var b=result()
-    console.log(b)
-    var val={}
-    const trialstat = ()=>{
-      
-        console.log(b,"from trialst")
-        for(var i=0;i<b.length;i++){
-            val={}
-            if(b[i] >=0 ){
-                val.name=tacc[i].name
-                val.credit=Math.abs(b[i])
-                trialstatvar.push(val)
-
-
-            }
-            else{
-                val.name=tacc[i].name
-                val.debit=Math.abs(b[i])
-                trialstatvar.push(val)
-
-            }
-            
-        //    console.log(trialstatvar,i,"trialstat")
-
-            
-        }
-        return trialstatvar
-        // console.log(trialstatvar,"trialstat")
-    }
-    const a =trialstat()
-    console.log(a)
-    // console.log(result())
-    // result1()
+    console.log(tacc,'taccounts')
     return(
         <>
-        {page=='tacc'? 
-        <div>
+        <div className='taccounts center'>
         <h2>Taccounts</h2>
         {
             tacc.map((v,i)=>(
-                <div>
+                <div className=''> 
                     <div className="name" >{v['name']}</div>
 
                     <div className="side-by-side-entry">
                     <div className='debitdiv'>
-                        <p>debit</p>
+                    <div className='head'><h5>Debit</h5></div>
+
                         
                         {v['debit'].map((v,i)=>(
-                            <div>
+                            <div className='debval'>
                             {v}
                             </div>
                         ))}
                         </div>
                         <div className='creditdiv'>
-                                <p>credit</p>
+                                <div className='head'><h5>Credit</h5></div>
                         {v['credit'].map((v,i)=>(
-                            <div>
+                            <div className='credval'>
                                    {v}
                                 </div>
                         ))}
-                        {b[i]}
+
 
                         
                        
                         </div> 
                           
                                 </div>
+                        <div className='rest resback'>{v['result']}</div>
+
+ 
                                 </div>
             ))
+
         }
-       <button onClick={()=>setPage('income')}>Trial Balance</button>
+        <div><Link to='/trial' className='linkcon'>Trial Balance</Link></div>
         </div>
         
-        :<TrialBalance result={a }/> }
-        {/* <TrialBalance result={a }/> */}
 
         </>
     )

@@ -1,12 +1,125 @@
+/* Taccounts */
 .side-by-side-entry{
     display:flex;
     flex-direction: row;
     justify-content: end;
+    border:1px  solid rgb(93, 153, 4);
+
 }
-.debitdiv{
-    margin-right: 10px;;
+.debitdiv,.creditdiv{
+    border-right:1px  solid rgb(93, 153, 4);
+    border-left:1px  solid rgb(93, 153, 4);
+
+
+}
+
+.head{
+    background-color: rgb(93, 153, 4);
+    padding: 0.1px 30px 0px;
+
+}
+.head h5{
+    padding-bottom: 5px;
+}
+.debval{
+border-bottom:2px solid rgb(93, 153, 4);
+text-align: center;
+
+}
+.credval{
+text-align: center;
+border-bottom:2px solid rgb(93, 153, 4);
+
 }
 .name{
-    border-bottom: 1px blue;
     text-align: center;
+    background-color: rgb(121, 165, 55);
+
+}
+.resback{
+    background-color: rgb(121, 165, 55);
+    text-align: center;
+    margin-bottom: 30px;
+    width:60%;
+    margin:0 auto;
+}
+.rest{
+    margin-bottom: 20px;
+}
+.linkcon{
+    background-color: rgb(93, 153, 4);
+    color:white;
+    padding: 10px;
+    margin-top:60px;
+}
+
+.center{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.tacc{
+    border: 2px solid green;
+    align-items: center;
+
+
+}
+th{
+    background-color: rgb(93, 153, 4);
+    border: 2px solid green;
+
+
+}
+/* Trial balance */
+#trial{
+    text-align: center;
+    /* padding:5px; */
+    padding: 10px;
+    border: 2px solid green;
+    width:100%;
+
+  
+
+}
+#trial td{
+    border: 2px solid green;
+
+}
+.maintable{
+    border: 2px solid green;
+    justify-content: center;
+    /* flex-direction: column; */
+    align-items: center;
+    text-align: center;
+    width:60%;
+    margin:0 auto;
+
+    
+
+}
+.cent{
+    margin:0 auto;
+    text-align: center;
+}
+.tableheader{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+}
+.header{
+    background-color:rgb(93, 153, 4);
+    padding: 10px;
+
+}
+.tabledata{
+    border: 1px solid green;
+    padding:10px;
+    text-align: center;
+
 }
