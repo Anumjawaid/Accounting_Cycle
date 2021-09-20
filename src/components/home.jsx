@@ -1,10 +1,12 @@
 // import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from 'react-router-dom';
 import './TrialBalance/style.css'
+import Navbar from './navbar'
 function Home(){
 
     return(
         <>
+        <Navbar/>
         <div className="container center">
             <div className="row">Accounting cycle</div>
            <div className="row">

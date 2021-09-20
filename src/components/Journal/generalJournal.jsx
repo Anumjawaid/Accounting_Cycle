@@ -2,7 +2,7 @@ import react, { useState, useEffect } from 'react'
 import './style.css'
 import firebase from '../configuration/firebase'
 import { Link } from 'react-router-dom'
-import sidebar from './sidebar'
+import Navbar from '../navbar'
 import Nothing from '../TrialBalance/nothing'
 
 export default function GeneralJournal() {
@@ -224,7 +224,7 @@ var [show,setshow]=useState('a')
 console.log(show,)
     return (
         <>
-        <sidebar />
+        <Navbar />
             <div className="conatiner cent">
                 <div className="row">
                     <div className="col-md-12 cent">

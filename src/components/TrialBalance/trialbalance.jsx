@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import firebase from '../configuration/firebase'
 import './style.css'
 import { Link } from 'react-router-dom'
-import { scryRenderedDOMComponentsWithClass } from 'react-dom/cjs/react-dom-test-utils.production.min'
-
+import Nothing from './nothing'
+import Navbar from '../navbar'
 
 export default function TrialBalance() {
 
@@ -35,6 +35,7 @@ export default function TrialBalance() {
 
     return (
         <>
+        <Navbar />
             <div className='cent'>
                 <div><h4>Trial Balance</h4></div>
                 {
@@ -77,7 +78,7 @@ export default function TrialBalance() {
                 </div>
 
                  </div> :
-                 <div><h4>Nothing in here</h4></div>
+                 <div><Nothing/></div>
              }
                     
 

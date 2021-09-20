@@ -4,6 +4,8 @@ import './style.css'
 import {Link} from 'react-router-dom'
 import TrialBalance from './trialbalance'
 import Nothing from '../TrialBalance/nothing'
+import Navbar from '../navbar'
+
 
 
 export default function Taccounts (){
@@ -19,8 +21,13 @@ export default function Taccounts (){
     console.log(tacc,'taccounts')
     return(
         <>
-        <div className='taccounts center'>
+        <Navbar />
         <h2>Taccounts</h2>
+
+        {tacc.length ?
+
+        <>
+        <div className='taccounts center'>
         {
             tacc.map((v,i)=>(
                 <div className=''> 
@@ -60,6 +67,10 @@ export default function Taccounts (){
         }
         <div><Link to='/trial' className='linkcon'>Trial Balance</Link></div>
         </div>
+
+        </>
+        : <Nothing/>}
+        
         
 
         </>
