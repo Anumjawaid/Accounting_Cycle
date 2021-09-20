@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import firebase from '../configuration/firebase'
 import OwnerEquity from './ownerstat'
 import './style.css'
+import Navbar from '../navbar'
 
 
 
@@ -115,6 +116,7 @@ export default function IncomeStat() {
             {/* <h1>Balance sheet</h1>
             <button onClick={()=>setAb('yes')}>Reveal</button> </div>:<div> */}
             <div >
+                <Navbar />
             <h1>Balance sheet</h1>
         <div className='incomestatment'>
             <h2>Income Statments</h2>

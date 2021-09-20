@@ -22,7 +22,7 @@ export default function Taccounts (){
     return(
         <>
         <Navbar />
-        <h2>Taccounts</h2>
+        <h2 className='center'>Taccounts</h2>
 
         {tacc.length ?
 
