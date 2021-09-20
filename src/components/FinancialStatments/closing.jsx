@@ -1,5 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import firebase from '../configuration/firebase'
+import Navbar from '../navbar'
 
 export default function Closing(){
      var val=[]
@@ -98,6 +99,8 @@ console.log(income)
 
    }
     return(
+        <>
+        <Navbar />
         <div className='cent'>
             <h3>Closing</h3>
             <p>All rev accounts All exp accounts All ow accounts shifts to income summary</p>
@@ -141,5 +144,7 @@ console.log(income)
             :<div><h3>NOTHING TO SHOW</h3> </div>}
 
         </div>
+
+        </>
     )
 }
